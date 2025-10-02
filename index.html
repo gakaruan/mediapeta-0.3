@@ -1,0 +1,1397 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Peta Keberagaman Indonesia</title>
+    <style>
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideRight {
+            from {
+                transform: translateX(40px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideleft {
+            from {
+                transform: translateX(-50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes pop {
+            from {
+                transform: scale(0.5);
+                opacity: 0;
+            }
+
+            to {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(50px);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: #fff5f5 url(./images/LatarBendera.png) no-repeat center center;
+            background-size: 100% 100%;
+            /* MEMAKSA gambar memenuhi lebar & tinggi body */
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            /* memastikan body setinggi viewport */
+        }
+
+
+
+
+        button {
+            padding: 15px;
+            margin: 15px auto 0 auto;
+            border: solid 2px #ffc116;
+            background: #ff0000;
+            color: rgb(255, 255, 255);
+            border-radius: 15px;
+            cursor: pointer;
+            text-align: center;
+            text-size-adjust: auto;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #00dd6b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        #kembali {
+            background: #ff0000;
+            color: rgb(255, 255, 255);
+        }
+
+        #kembali:hover {
+            background-color: #00dd6b;
+            transform: scale(1.05);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .container {
+            max-width: 1050px;
+            min-width: 400px;
+            margin: 50px auto;
+            background: #ffffff;
+            border-radius: 25px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .dialog-box {
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #333;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.95);
+            max-width: 600px;
+            margin: 20px auto;
+            font-family: sans-serif;
+        }
+
+        /* gambar di dialog */
+        .dialog-img {
+            display: block;
+            max-width: 800px;
+            /* batas lebar */
+            max-height: 300px;
+            /* batas tinggi */
+            margin: 15px auto;
+            /* jarak atas bawah */
+            border-radius: 10px;
+            object-fit: contain;
+            /* jaga proporsi */
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+
+        .dialog-text {
+            margin-bottom: 15px;
+            font-size: 1.1rem;
+        }
+
+
+        #progressBar {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #4caf50, #81c784);
+            transition: width 0.9s ease;
+            text-align: center;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        #maskot {
+            max-width: 110px;
+            max-height: 110px;
+        }
+
+
+
+        .dialog-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #007bff;
+            color: white;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        #evalBtn:disabled {
+            background-color: #aaa;
+            cursor: not-allowed;
+            opacity: 0.6;
+        }
+
+
+        .section-box {
+            display: flex;
+            background: #e3f2fd;
+            justify-content: space-evenly;
+            border-radius: 25px;
+            padding: 2px;
+            margin-bottom: 2px;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        p {
+            size: 13px;
+        }
+
+        h1 {
+            color: #ffffff;
+            align-self: center;
+            text-align: center;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            animation: slideup 2s;
+        }
+
+        .containerUtama {
+            max-width: 1050px;
+            min-width: 400px;
+
+        }
+
+        canvas {
+            pointer-events: none;
+            /* make the canvas transparent to the mouse - needed since canvas is position infront of image */
+            position: absolute;
+        }
+
+        #infoBox {
+            position: absolute;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #000000;
+            border-radius: 25px;
+            padding: 20px 25px;
+            box-shadow: 0 5px 15px rgba(0, 1, 0, 1);
+            display: none;
+            z-index: 999;
+            font-size: 12px;
+        }
+
+        .animate-ragam {
+            animation: pop 1s ease-out;
+        }
+
+        .animate-detail {
+            animation: slideUp 1s ease-out;
+        }
+
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+
+
+        #app {
+            width: 100%;
+            border: 1px #ffc116;
+            box-shadow: #000000 5px;
+            max-width: 1080px;
+            /* batas maksimal */
+            margin: 20px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            text-align: center;
+            font-family: Arial, sans-serif;
+            box-sizing: border-box;
+
+        }
+
+        #app h2 {
+            font-size: 28px;
+            font-weight: bold;
+            color: #c62828;
+            margin-bottom: 0;
+        }
+
+        #app h3 {
+            font-size: 18px;
+            font-style: italic;
+            color: #ec7242;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
+        #app p {
+            margin-bottom: 15px;
+            font-size: 14px;
+            color: #444;
+        }
+
+        .cards {
+            display: flex;
+            flex-direction: row;
+            justify-content: space-evenly;
+            gap: 10px;
+            flex-wrap: wrap;
+            /* biar responsif */
+        }
+
+        .card-box {
+            flex: 1;
+            /* supaya semua box rata lebarnya */
+            min-width: 150px;
+            max-width: 500px;
+
+            /* batasi lebar */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+        }
+
+        .card:hover {
+            transform: scale(1.10);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            opacity: 0.9;
+            background-color: rgb(183, 255, 111);
+            opacity: 60%;
+        }
+
+
+        .card {
+            flex: auto;
+            /* dua kolom di layar sempit */
+            min-width: 150px;
+            max-width: 150px;
+            height: 100%;
+            background: #e53935;
+            border: 5px solid #ffc116;
+            color: #fff;
+            border-radius: 20px;
+            /* isi menyesuaikan tinggi terbesar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            /* biar gambar tetap proporsional */
+            display: block;
+        }
+
+        .label {
+            flex: auto;
+            flex-wrap: wrap;
+            padding-bottom: 10px;
+            color: #c62828;
+            align-items: top;
+        }
+
+
+        .Informasinya {
+            display: flex;
+            padding-left: 10%;
+            padding-right: 10%;
+            flex-direction: row;
+            align-items: center;
+            justify-content: space-evenly;
+            align-content: center;
+            gap: 10px;
+        }
+
+        .Detailinfo {
+            font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex: auto;
+            padding: 15px;
+            background: #e53935;
+            border: 5px solid #ffc116;
+            color: #fff;
+            border-radius: 20px;
+            align-items: center;
+            justify-content: center;
+            text-align: justify;
+            display: flex;
+
+        }
+
+        .isian {
+            font-size: 18px;
+            font-weight: bold;
+            color: #000000;
+            font-family: Verdana;
+        }
+
+        .perkenalan {
+            display: flex;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .perkenalan-content {
+            background: rgb(255, 255, 255);
+            flex-direction: row;
+            border: #000000ba 1.5px solid;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 750px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            animation: pop 0.5s ease;
+        }
+
+        .perkenalan-content-2 {
+            background: rgb(255, 255, 255);
+            flex-direction: row;
+            border: #000000ba 1.5px solid;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: justify;
+            max-width: 750px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            animation: pop 0.5s ease;
+        }
+
+        .perkenalan-img {
+            max-height: 20px;
+        }
+
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+
+        }
+
+
+
+        .modal-content {
+            background: rgb(255, 255, 255);
+            border: #000000ba 1.5px solid;
+            padding: 20px;
+            border-radius: 12px;
+            text-align: center;
+            max-width: 500px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+            animation: pop 0.3s ease;
+        }
+
+        #closePoint {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            background: #39d1ff;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .closePoint :hover {
+            background: #023241;
+            color: #023241;
+        }
+
+        .modal-buttons {
+            margin-top: 15px;
+            display: flex;
+            justify-content: space-around;
+        }
+
+        .modal-buttons button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+
+        #confirmOk {
+            background: #007bff;
+            color: white;
+        }
+
+        #confirmCancel {
+            background: #ccc;
+            color: black;
+        }
+
+        .timer {
+            border: 2px solid #90caff;
+            font-size: 13px;
+            text-align: center;
+            align-content: center;
+            border-radius: 25px;
+            padding: 5px 10px;
+            margin: 2px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        img[usemap] {
+            outline: none;
+            /* hilangkan outline biru */
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.8s forwards;
+        }
+
+        area {
+            outline: none;
+        }
+
+        @media (max-width: 720px) {
+            .Informasinya {
+                flex-direction: column;
+
+            }
+        }
+
+        input {
+            border-radius: 25px;
+            border: solid 1px #000000;
+            padding: 5px;
+        }
+
+        #petunjukFooter {
+            background: #f8f8f8;
+            border-top: 2px solid #ff9b05;
+            padding: 20px;
+            margin-top: 40px;
+            font-size: 14px;
+            color: #333;
+            text-align: left;
+        }
+
+        #petunjukFooter h3 {
+            margin-top: 0;
+            color: #c62828;
+        }
+
+        #petunjukFooter ul {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        #petunjukFooter li {
+            margin: 8px 0;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        #petunjukFooter li::before {
+            content: "➤";
+            position: absolute;
+            left: 0;
+        }
+        #petunjukFooter img {
+            max-width:  600px;
+            max-height: 600px;
+        }
+
+        .header-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fefefe;
+            padding: 10px 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            margin: 10px auto;
+            max-width: 800px;
+        }
+
+        .header-info .player {
+            font-weight: bold;
+            color: #c62828;
+            font-size: 16px;
+        }
+
+        .resetBtn {
+            background: #ff5252;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .resetBtn:hover {
+            background: #e53935;
+            transform: scale(1.05);
+        }
+
+        #evalBtn {
+            background: #aaa;
+            border: none;
+            padding: 8px 45px;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            cursor: not-allowed;
+        }
+
+        #evalBtn.unlocked {
+            background: #4caf50;
+            cursor: pointer;
+        }
+
+        .stats-bar {
+            display: flex;
+            justify-content: space-around;
+            margin: 15px auto;
+            max-width: 800px;
+        }
+
+        .stat-card {
+            flex: 1;
+            margin: 0 5px;
+            background: #e3f2fd;
+            border-radius: 12px;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body onload='myInit()'>
+  
+    <center>
+        <h1> PETA KEBERAGAMAAN INDONESIA </h1>
+    </center>
+
+    <div class="perkenalan" id="introModal">
+        <div class="perkenalan-content">
+            <img id="maskot" src="./images/Avatar0.png" alt=""><br>
+            <b>Halo Kawan! <br>Siapa Namamu?</b><br><br>
+            <input id="usernameInput" placeholder="  Tuliskan Namamu Disini " /><br><br>
+            <button id="startBtn">Lanjut</button>
+        </div>
+    </div>
+
+
+    <div class="perkenalan" id="Awalan" style="display:none;"></div>
+
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <p id="confirmText"> Kamu Sudah Mengunjungi Daerah Ini. Apakah ingin Berkunjung Kembali?</p>
+            <div class="modal-buttons">
+                <button id="confirmOk">Ya, lanjut</button>
+                <button id="confirmCancel">Batal</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="pointModal" class="modal">
+        <div class="modal-content">
+            <h3> Good Job !</h3>
+            <p id="pointText">Kamu mendapatkan poin!</p>
+            <button id="closePoint"> Lanjut </button>
+        </div>
+    </div>
+
+
+    <div class="header-info">
+        <div class="player">👤 Nama Penjelajah : <span id="Pemain">x</span></div>
+    </div>
+
+    <div class="header-info">
+        <button class="resetBtn" onclick="resetProgress()">↺<br> Reset Progress</button>
+        <button id="evalBtn" disabled onclick="startEvaluation()">✍ <br>Evaluasi</button>
+    </div>
+
+    <div class="stats-bar">
+        <div class="stat-card">WAKTU PETUALANGAN: <br><span id="timer">00:00:00</span></div>
+        <div class="stat-card">POIN: <br><span id="edupoint">0</span></div>
+        <div class="stat-card">LEVEL PETUALANG: <br><span id="levelDisplay">Pemula</span></div>
+    </div>
+
+
+
+    </div>
+
+    <div id="containerAwal">
+        <canvas id='myCanvas'></canvas>
+        <div id="infoBox"></div>
+        <img id="image" img src="./images/PetaProvinsi.png" usemap="#image-map">
+
+        <map name="image-map">
+            <area target="_self" alt="Aceh" title="Aceh" onmouseover='myHover(this, event);' onmouseout='myLeave();'
+                coords="106,396,110,452,158,507,218,563,277,595,325,655,325,706,377,718,349,583,349,539,389,511,341,467,321,432"
+                shape="poly" onclick="pilihProvinsi('Aceh')">
+            <area target=" _self" alt="Sumatera Utara" title="Sumatera Utara" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="385,722,381,667,369,615,385,527,441,571,516,615,556,675,572,722,576,776,536,780,564,839,528,831,536,867,500,863,473,887"
+                shape="poly" onclick="pilihProvinsi('SumUtara')">
+            <area target="_self" alt="Sumatera Barat" title="Sumatera Barat" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="480,900,548,888,548,849,584,861,580,892,628,924,628,964,696,1004,723,1036,700,1060,652,1072,668,1119,644,1155"
+                shape="poly" onclick="pilihProvinsi('Sumbar')">
+            <area target="_self" alt="Riau" title="Riau" onmouseover='myHover(this, event);' onmouseout='myLeave();'
+                coords="592,717,596,765,576,797,580,833,600,880,628,900,644,932,660,956,715,1004,755,1008,811,1020,843,976,875,980,863,936,903,920,755,745,656,697"
+                shape="poly" onclick="pilihProvinsi('')">
+            <area target="_self" alt="Jambi" title="Jambi" onmouseover='myHover(this, event);' onmouseout='myLeave();'
+                coords="823,1037,843,1009,891,1009,907,1029,942,1026,974,1041,982,1085,887,1101,887,1137,859,1157,791,1185,727,1185,684,1149,672,1097,715,1085,727,1053,739,1021,775,1021"
+                shape="poly" onclick="pilihProvinsi('Jambi')">
+            <area target="_self" alt="Bengkulu" title="Bengkulu" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="656,1181,692,1161,747,1200,791,1248,827,1248,807,1276,811,1308,847,1340,879,1344,879,1364,907,1384,887,1388,819,1356,767,1308,763,1276,700,1228,676,1192"
+                shape="poly" onclick="pilihProvinsi('Bengkulu')">
+            <area target="_self" alt="Sumatera Selatan" title="Sumatera Selatan" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="767,1191,823,1191,879,1159,903,1123,982,1096,1022,1131,994,1167,1078,1159,1098,1195,1122,1223,1098,1271,1114,1287,1106,1319,1062,1279,1030,1319,982,1331,954,1354,954,1386,923,1386,887,1358,887,1327,855,1327,811,1291,835,1267,843,1243,803,1239"
+                shape="poly" onclick="pilihProvinsi('Sumsel')">
+            <area target="_self" alt="Lampung" title="Lampung" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="895,1398,927,1426,982,1490,1010,1494,982,1454,1042,1478,1054,1446,1082,1470,1102,1486,1110,1426,1114,1351,1106,1323,1082,1315,1062,1287,1030,1323,1006,1331,978,1335,962,1351,962,1370,970,1390,938,1394,911,1378"
+                shape="poly" onclick=" pilihProvinsi('Lampung')">
+            <area target="" alt="Maluku" title="Maluku" onmouseover='myHover(this, event);' onmouseout='myLeave();'
+                coords="3009,1264,3073,1304,3145,1308,3296,1288,3495,1320,3551,1396,3587,1368,3483,1280,3443,1204,3344,1181,3308,1185,3228,1181,3093,1212,3029,1216,3001,1232"
+                shape="poly" onclick="pilihProvinsi('Maluku')">
+            <area target="" alt="Jakarta" title="Jakarta" onmouseover='myHover(this, event);' onmouseout='myLeave();'
+                coords="1185,1499,1205,1527,1233,1495,1273,1511,1313,1499,1257,1435,1193,1439" shape="poly"
+                onclick="pilihProvinsi('Jakarta')">
+            <area target="" alt="Jawa Barat" title="Jawa Barat" onmouseover='myHover(this, event);'
+                onmouseout='myLeave();'
+                coords="1161,1584,1161,1632,1257,1640,1313,1664,1357,1668,1388,1660,1381,1628,1361,1600,1384,1596,1388,1572,1337,1516,1233,1520,1193,1532,1165,1528"
+                shape="poly" onclick="pilihProvinsi('JaBar')">
+        </map>
+
+    </div>
+
+    <div id="containerUtama" style="display:none;">
+        <div id="app"></div>
+    </div>
+
+    <footer id="petunjukFooter">
+        <h3>📌 Petunjuk Penggunaan Media</h3>
+        <ul>
+            <li>Perhatikan peta utama yang menampilkan seluruh daerah Indonesia <br><img src="./images/Tutorial/PetaUtama.png" alt=""></li>
+            <li>Klik Salah satu <b>provinsi</b> di peta untuk membuka informasi daerah tersebut.<br><img src="./images/Tutorial/Tekan.png"> </li>
+            <li>Baca dan pelajari konten budaya yang tersedia.<br><img src="./images/Tutorial/Keberagaman.png"></li>
+            <li>Jika Semua Konten Sudah Dipelajari Maka Akan Muncul Tombol <b>Kembali ke Peta Utama</b> yang juga menutup informasi provinsi yang dibaca.<br><img src="./images/Tutorial/Tombol_Kembali.png"></li>
+            <li>Tiap Provinsi dapat memberikan 2 sampai 3 poin secara random<br> <img src="./images/Tutorial/popup.png"></li>
+            <li>Kumpulkan poin sebanyak 60 poin buntuk membuka <b>Evaluasi</b>. <br><img src="./images/Tutorial/Tombol_evaluasi_unlocked.png"></li>
+
+        </ul>
+    </footer>
+
+
+
+    <script>
+        let timerInterval;
+        let totalSeconds = 0;
+        let edupoint = 0;
+        let visitedCards = new Set();  // untuk menyimpan card yang sudah diklik
+        let currentProv = null;        // provinsi yang aktif
+        let visitedProvinces = new Set()
+        let visitedProv = new Set();
+        let dialogIndex = 0;
+        let dialogs = []; // nanti diisi setelah nama dimasukkan
+
+
+
+        const TOTAL_PROVINCE = 38;
+        const BASE_POINT = Math.floor(100 / TOTAL_PROVINCE);  // 2
+        const EXTRA_POINT_COUNT = 100 % TOTAL_PROVINCE;       // 24
+        const levels = [
+            { points: 0, name: "Pemula" },
+            { points: 3, name: "Penjelajah" },
+            { points: 31, name: "Petualang" },
+            { points: 61, name: "Master" },
+            { points: 100, name: "Grandmaster" }
+        ];
+
+
+        function capitalizeName(name) {
+            return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
+        }
+
+
+        function saveProgress() {
+            const data = {
+                edupoint,
+                visitedProv: Array.from(visitedProv),
+                visitedProvinces: Array.from(visitedProvinces),
+                totalSeconds
+            };
+            localStorage.setItem("progressGame", JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem("progressGame");
+            if (saved) {
+                const data = JSON.parse(saved);
+                edupoint = data.edupoint || 0;
+                visitedProv = new Set(data.visitedProv || []);
+                visitedProvinces = new Set(data.visitedProvinces || []);
+                totalSeconds = data.totalSeconds || 0;
+
+                updateEdupoint();
+                document.getElementById("timer").textContent =
+                    String(Math.floor(totalSeconds / 60)).padStart(2, '0') + ":" +
+                    String(totalSeconds % 60).padStart(2, '0');
+            }
+        }
+
+        function showIntro() {
+            const savedName = localStorage.getItem("playerName");
+            if (!savedName) {
+                // kalau belum ada nama tersimpan, tampilkan modal
+                document.getElementById("introModal").style.display = "flex";
+            }
+        }
+
+        function startEvaluation() {
+            window.open("https://www.educaplay.com/game/25603723-indonesia_regional_traditions_match.html", "_self");
+        }
+
+        function showDialog() {
+            const awalan = document.getElementById("Awalan");
+            if (dialogIndex < dialogs.length) {
+                let d = dialogs[dialogIndex];
+                awalan.innerHTML = `
+                <div class="dialog-box">
+                <div class="dialog-text">${d.text}</div>
+                    ${d.img ? `<img class="dialog-img" src="${d.img}" alt="ilustrasi">` : ""}
+                    <button class="dialog-btn" onclick="nextDialog()">Lanjut</button>
+                </div>`;
+            } else {
+                awalan.innerHTML = `
+                <div class="dialog-box">
+                <div class="dialog-text">
+                Nah Itu Tadi Petunjuk Untuk Menggunakan Media Ini<br> 
+                Kamu Dapat Menekan Tombol Ulangi Jika Masih Kurang Jelas<br>
+                Tapi Jika Kamu Sudah Paham Silahkan Menekan Tombol Mulai.<br><br>
+                </div>
+                    <button class="dialog-btn" onclick="ulang()">Ulangi</button>
+                    <button class="dialog-btn" onclick="closeAwalan()">Mulai</button>
+                </div>`;
+            }
+        }
+
+        function nextDialog() {
+            dialogIndex++;
+            showDialog();
+        }
+
+        function closeAwalan() {
+            document.getElementById("Awalan").style.display = "none";
+
+            const rawName = localStorage.getItem("playerName");
+            const playerName = capitalizeName(rawName);
+
+            document.getElementById("Pemain").textContent = `${playerName}`;
+
+
+            timerInterval = setInterval(() => {
+                totalSeconds++;
+                const minutes = String(Math.floor(totalSeconds / 60)).padStart(2, '0');
+                const seconds = String(totalSeconds % 60).padStart(2, '0');
+                document.getElementById("timer").textContent = `${minutes}:${seconds}`;
+            }, 1000);
+        }
+
+        function ulang() {
+            dialogIndex = 0;
+            showDialog();
+        }
+
+        document.getElementById("startBtn").addEventListener("click", () => {
+            const name = document.getElementById("usernameInput").value.trim();
+            if (name) {
+                localStorage.setItem("playerName", name);
+
+                document.getElementById("introModal").style.display = "none";
+                document.getElementById("Awalan").style.display = "block";
+
+                const playerName = capitalizeName(name);
+
+                // Contoh percakapan + gambar
+                dialogs = [
+                    { text: `<b>${playerName}?</b><br> Kamu Memiliki Nama Yang Bagus Kawan!`, img: "./images/Avatar0.png" },
+                    { text: `Kalau Kamu Datang Kesini Pasti Kamu  Ingin Mempelajari Tentang Keberagaman Yang Ada Di Indonesia Kan?.`, img: "./images/Avatar0.png" },
+                    { text: `Nah Disini Sudah Ada Peta yang akan memudahkan kamu mempelajari hal tersebut Kawan!`, img: "./images/Avatar0.png" },
+                    { text: `Tapi Sebelum Itu Tentu Kamu Harus Tahu Dulu Cara Menggunakannya kan? Karena itu akan aku jelaskan dulu cara memakainya. `, img: "./images/Avatar0.png" },
+                    { text: `Nah Sekarang Perhatikan gambar dibawah! Ini adalah Peta utama yang menampilkan semua daerah tingkat provinsi.`, img: "" },
+                    { text: ``, img: "" },
+                    { text: ``, img: "" }
+                ];
+
+                dialogIndex = 0;
+                showDialog();
+            } else {
+                alert("Tolong isi namamu terlebih dahulu ya, Kawan!");
+            }
+        });
+
+
+
+
+
+        function resetProgress() {
+            localStorage.removeItem("progressGame");
+            edupoint = 0;
+            visitedProv.clear();
+            visitedProvinces.clear();
+            totalSeconds = 0;
+            updateEdupoint();
+            document.getElementById("timer").textContent = "00:00";
+        }
+
+
+
+
+
+        function getLevelName(points) {
+            let current = levels[0];
+            for (let lvl of levels) {
+                if (points >= lvl.points) current = lvl;
+                else break;
+            }
+            return current.name;
+        }
+
+        function updateEdupoint() {
+            document.getElementById("edupoint").textContent = edupoint;
+
+            const levelName = getLevelName(edupoint);
+            document.getElementById("levelDisplay").textContent = `${levelName}`;
+
+            const percent = Math.min(100, Math.round((edupoint / 100) * 100));
+            const bar = document.getElementById("progressBar");
+            if (bar) { bar.style.width = percent + "%"; bar.textContent = percent + "%"; }
+
+
+
+        }
+
+
+        // fungsi untuk hitung poin provinsi tertentu
+        function getProvincePoint(index) {
+            return index >= (TOTAL_PROVINCE - EXTRA_POINT_COUNT)
+                ? BASE_POINT + 1   // 3 poin
+                : BASE_POINT;      // 2 poin
+        }
+
+
+
+
+
+
+        function showConfirm(message, callback) {
+            const modal = document.getElementById("confirmModal");
+            const text = document.getElementById("confirmText");
+            const okBtn = document.getElementById("confirmOk");
+            const cancelBtn = document.getElementById("confirmCancel");
+
+            text.textContent = message;
+            modal.style.display = "flex";
+
+            okBtn.onclick = () => {
+                modal.style.display = "none";
+                callback(true);
+            };
+            cancelBtn.onclick = () => {
+                modal.style.display = "none";
+                callback(false);
+            };
+        }
+
+
+
+        const Dataprovinsi = {
+            Sumbar: {
+                nama: "PROVINSI SUMATERA BARAT",
+                subjudul: "Keberagaman Budaya",
+                deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
+                konten: [
+                    { label: "Bahasa Daerah", gambar: ' <b>🔊</b> ', isi: "Bahasa Minang", detail: "Ambo  :  saya <br> Waang   :  kamu<br> Onde mande  :  ya ampun<br>Siatu :  Siapa<br>" },
+                    { label: "Pakaian Adat", gambar: '<img src="">', isi: " Pakaian Penghulu (Pria) dan Bundo KanduangBundo Kanduang (Wanita)", detail: "Pakaian Penghulu merupakan pakaian kebesaran dalam adat Minangkabau dan tidak semua orang dapat memakainya.<br><br>Pakaian Bundo Kanduang merupakan busana tradisional khas Minangkabau yang dikenakan oleh perempuan Minang yang sudah menikah dan memiliki peran penting dalam keluarga serta kehidupan sosial.  " },
+                    { label: "Rumah Adat", gambar: '<img src="https://storage.googleapis.com/arsitagx-master-article/article-photo/109/unnamed.jpg">', isi: "Rumah Gadang", detail: "Rumah adat ini memiliki keunikan bentuk arsitektur dengan bentuk puncak atapnya runcing yang menyerupai tanduk kerbau dan dahulunya dibuat dari bahan ijuk yang dapat tahan sampai puluhan tahun,namun belakangan atap rumah ini banyak berganti dengan atap seng." },
+                    { label: "Tarian tradisional", gambar: '<img src="https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/58da1d89-ecb1-4431-99bc-b829ee49875f/d2ujzvn-bc4ca2f0-e266-4897-b010-96e35196cf9a.jpg/v1/fit/w_644,h_1000,q_70,strp/tari_piring_by_uqqy_d2ujzvn-375w-2x.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7ImhlaWdodCI6Ijw9MTAwMCIsInBhdGgiOiIvZi81OGRhMWQ4OS1lY2IxLTQ0MzEtOTliYy1iODI5ZWU0OTg3NWYvZDJ1anp2bi1iYzRjYTJmMC1lMjY2LTQ4OTctYjAxMC05NmUzNTE5NmNmOWEuanBnIiwid2lkdGgiOiI8PTY0NCJ9XV0sImF1ZCI6WyJ1cm46c2VydmljZTppbWFnZS5vcGVyYXRpb25zIl19.20RWX6WeeUQEGtJGx4mvTV8QmLv9XxZnJCnIkL_ia00">', isi: 'Tari Piring', detail: " Secara historis, Tari Piring awalnya merupakan tarian ritual untuk menghormati para dewa dan menyampaikan rasa syukur atas hasil panen yang melimpah, sebagaimana masyarakat agraris. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="https://ik.imagekit.io/tvlk/blog/2024/03/image-2-499x1024.png?tr=q-70,c-at_max,w-500,h-300,dpr-2">', isi: "", detail: "Masyarakat Sumatera Barat memiliki alat musik tradisional yang memiliki kemiripan fungsi dengan klarinet bernama Serunai. Instrumen ini umumnya digunakan dalam berbagai acara adat di Sumatera Barat, menjadi bagian penting dalam ritual batagak panghulu yakni suatu acara adat yang melibatkan pengangkatan atau pelantikan seorang pemimpin adat atau kepala suku." },
+                    { label: "Makanan Khas", gambar: '<img src="https://images.tokopedia.net/img/KRMmCm/2022/8/9/51584c5e-2713-4895-88d5-30b677255ffd.jpg">', isi: "Rendang", detail: "Asal-usul rendang ditelusuri berasal dari tanah Minangkabau, Sumatera Barat. Bagi masyarakat Minang, rendang sudah ada sejak dahulu dan telah menjadi masakan tradisi yang dihidangkan dalam berbagai acara adat dan hidangan keseharian." }
+                ]
+            },
+            Aceh: {
+                nama: "PROVINSI ACEH",
+                subjudul: "Keberagaman Budaya",
+                deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
+                konten: [
+                    { label: "Bahasa Daerah", gambar: ' <b>🔊</b> ', isi: "Bahasa Aceh, Gayo, Alas", detail: "Lon :   Saya <br> Kah :   Kamu<br> Kamoe : Kami<br> Aduen  :   Abang<br> Kee :   Aku" },
+                    { label: "Pakaian Adat", gambar: '<img src="https://cdn1-production-images-kly.akamaized.net/1s6ZPDAwaKC8_YgQZi9VIwjrMUQ=/1280x1706/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/4872614/original/085979300_1719194866-Snapinsta.app_448956385_18443287396044927_6944848405886561389_n_1024.jpg">', isi: "Linto Baro (pria), Daro Baro (wanita)", detail: "Linto Baro adalah salah satu pakaian tradisional Orang Aceh yang dikenakan oleh pria dewasa. Pakaian ini biasanya digunakan dalam beberapa upacara adat Aceh. Dalam pernikahan Adat Aceh, Linto Baru dikenakan oleh pengantin pria. Sedangkan pada pengantin wanita, memakai Dara Baro. " },
+                    { label: "Rumah Adat", gambar: '<img src="https://www.dailysports.id/upload/large/f1ad28bce852df409af40feccfda99cf.jpg">', isi: "Rumoh Aceh", detail: "Pada umumnya Rumoh Aceh merupakan rumah panggung dengan tinggi tiang antara 2,50 – 3 meter, terdiri dari tiga atau lima ruang, dengan satu ruang utama yang dinamakan rambat. Rumoh dengan tiga ruang memiliki 16 tiang, sedangkan Rumoh dengan lima ruang memiliki 24 tiang." },
+                    { label: "Tarian tradisional", gambar: '<img src="images/tari saman.jpg">', isi: 'Tari Saman', detail: "tarian tradisional suku Gayo dari Aceh yang memadukan gerakan dinamis, syair, dan nyanyian tanpa alat musik, serta berfokus pada kekompakan dan kebersamaan para penari " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="https://upload.wikimedia.org/wikipedia/commons/8/88/COLLECTIE_TROPENMUSEUM_Tamboerijn_TMnr_674-744.jpg">', isi: 'Rapai', detail: "Rapai merupakan alat musik tradisional Aceh yang ditabuh menggunakan tangan kosong, tidak menggunakan stik." },
+                    { label: "Makanan Khas", gambar: '<img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Mie_Aceh_with_beef.jpg">', isi: "Mie Aceh", detail: " Keunikan cita rasa mie Aceh terletak pada racikan bumbu yang kaya akan rempah-rempah, sehingga menghasilkan rasa yang kuat di lidah." }
+                ]
+            },
+            JaBar: {
+                nama: "PROVINSI JAWA BARAT",
+                subjudul: "Keberagaman Budaya",
+                deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
+                konten: [
+                    { label: "Bahasa Daerah", gambar: ' <b>🔊</b> ', isi: "Bahasa Sunda", detail: "Abdi :   Saya<br> Maneh :   Kamu<br>akang  :   kakak(laki laki)<br> teteh :   kakak(perempuan)" },
+                    { label: "Pakaian Adat", gambar: '<img src="https://akcdn.detik.net.id/community/media/visual/2022/08/31/baju-adat-menak-pakaian-khas-jawa-barat-untuk-kaum-bangsawan_43.jpeg?w=700&q=90">', isi: "Pakaian Menak", detail: "busana tradisional khas Jawa Barat, khususnya Sunda, yang dikenakan oleh kalangan bangsawan atau orang-orang terpandang. Ciri khasnya adalah tampilannya yang elegan dan mewah, dengan kain berwarna hitam berbahan beludru yang dihiasi sulaman benang emas." },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Jawa Barat/Julang_Ngapak.format-webp.webp">', isi: "Rumoh Julang Ngapak", detail: "Bentuk atapnya menyerupai sayap burung yang sedang terbang, melambangkan kebebasan dan keselarasan dengan alam. Rumah ini terbuat dari kayu dan bambu, serta memiliki kolong di bawah lantai untuk menjaga kelembapan. Gaya bangunannya sederhana, tapi penuh makna budaya dan filosofi hidup masyarakat Sunda" },
+                    { label: "Tarian tradisional", gambar: '<img src="https://www.kabarwisata.id/wp-content/uploads/2022/04/Tari-Merak.jpg">', isi: 'Tari merak', detail: "Tari Merak adalah tarian tradisional dari Jawa Barat yang diciptakan oleh Raden Tjetje Somantri pada tahun 1950-an, terinspirasi oleh tingkah laku burung merak jantan yang memikat. Tarian ini menampilkan keindahan burung merak melalui gerakan anggun dan lincah, kostum berwarna-warni yang menyerupai bulu merak, serta mahkota kepala yang indah, dan diiringi musik gamelan degung khas Sunda. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="https://akcdn.detik.net.id/community/media/visual/2014/12/29/61aff59b-d3cf-434a-8e46-d7dad5a6256c.jpg?w=700&q=90">', isi: 'Angklung', detail: "alat musik tradisional Sunda dari Jawa Barat yang terbuat dari tabung-tabung bambu, dimainkan dengan cara digoyangkan untuk menghasilkan suara,Angklung terdaftar sebagai Karya Agung Warisan Budaya Lisan dan Nonbendawi Manusia dari UNESCO sejak November 2010" },
+                    { label: "Makanan Khas", gambar: '<img src="https://static.republika.co.id/uploads/member/images/news/um52pb6aw9.jpg">', isi: "Batagor", detail: "Batagor adalah makanan khas Bandung yang merupakan singkatan dari Bakso Tahu Goreng. Terbuat dari adonan ikan tenggiri yang dibungkus tahu atau kulit pangsit, lalu digoreng hingga renyah dan disajikan dengan bumbu kacang. " }
+                ]
+            },
+            Jakarta: {
+                nama: "PROVINSI JAKARTA",
+                subjudul: "Keberagaman Budaya",
+                deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
+                konten: [
+                    { label: "Bahasa Daerah", gambar: ' <b>🔊</b> ', isi: "Betawi", detail: "gua :   Saya <br> Eluh  :   Kamu<br> kite : Kami<br>Enya  :   Ibu<br> ogah :   Tidak Mau" },
+                    { label: "Pakaian Adat", gambar: '<img src="https://asset.kompas.com/data/photo/buku/6397e2ffe7ed6.jpg">', isi: "Baju Sadariah (pria), Kebaya Encim (wanita)", detail: "Baju sadariah adalah baju dengan atasan longgar berlengan panjang, dipadukan celana komprang, sarung, dan peci.<br><br> Kebay Encim adalah Kebaya tipis berbordir halus yang dipadukan kain batik Betawi." },
+                    { label: "Rumah Adat", gambar: '<img src="https://asset.kompas.com/crops/3xjaxz6uk10--3ZCX2XMOmH-F-c=/0x0:512x341/1200x800/data/photo/2021/01/28/6012bbbae02b0.jpg">', isi: "Rumah Kebaya", detail: " Dinamai demikian karena bentuk atapnya yang seperti lipatan kain kebaya ketika dilihat dari samping. Ciri khas utamanya adalah teras luas di depan untuk menerima tamu, dinding kayu yang bisa digeser untuk memperluas ruangan, dan pembagian ruang publik di depan serta ruang pribadi di belakang. " },
+                    { label: "Tarian tradisional", gambar: '<img src="https://genpi.id/wp-content/uploads/2020/10/foto-gambar-Tari-Topeng-Betawi.jpg"> ', isi: 'Tari Topeng Betawi', detail: "Pertunjukan Topeng Betawi menampilkan kisah-kisah kehidupan masyarakat Betawi yang disampaiklat musik tradisional Aceh yang ditabuh menggunakan tangan kosong, tidak menggunakan stikan melalui bentuk tari dan drama. Disebut tari topeng karena dalam beberapa bagian pertunjukan, penarinya mengenakan topeng saat menari, dan masyarakat Betawi dahulu percaya bahwa topeng memiliki kekuatan magis." },
+                    { label: "Alat Musik tradisional", gambar: '<img src="https://asset.kompas.com/crops/c67AhuP1Ucgd53R_5qhy1DbgXcE=/0x0:780x390/1200x800/data/photo/2013/05/16/1944493-set-gambang-kromong-betawi--780x390.jpg">', isi: 'Gambang Kromong', detail: "Gambang Kromong adalah kesenian Alat musik Betawi yang memadukan gamelan dan instrumen Tionghoa." },
+                    { label: "Makanan Khas", gambar: '<img src="https://delishglobe.com/wp-content/uploads/2025/07/Kerak-Telor-Crispy-Egg-Pancake-2048x1499.png">', isi: "Kerak Telor", detail: " Makanan khas Betawi dari beras ketan, telur, dan ebi, dimasak dengan arang." }
+                ]
+            },
+            Maluku: {
+                nama: "PROVINSI MALUKU",
+                subjudul: "Keberagaman Budaya",
+                deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
+                konten: [
+                    { label: "Bahasa Daerah", gambar: ' <b>🔊</b> ', isi: "Ambon", detail: "Beta :   Saya <br> Ale  :   Kamu<br> Katong : kita<br>Dorang  :   Mereka<br> Makang :   Makan" },
+                    { label: "Pakaian Adat", gambar: '<img src="https://blue.kumparan.com/image/upload/fl_progressive,fl_lossy,c_fill,f_auto,q_auto:best,w_640/v1634025439/725cc020c1e6908e5868e680a8b1d03cce93754825a4ecafc91aa9b552adee90.jpg">', isi: "Baju Cele", detail: "Baju Cele adalah pakaian tradisional yang berasal dari Maluku. Pakaian ini memiliki motif garis-garis geometris atau berkotak-kotak kecil. Pakaian ini biasa dipadupadankan dengan kain salele yang diletakkan pada bahu dan biasa dikenakan pada upacara adat. Warna baju ini adalah warna-warna cerah, tetapi lebih sering didominasi dengan warna merah." },
+                    { label: "Rumah Adat", gambar: '<img src="https://www.garudacitizen.com/wp-content/uploads/2021/01/Rumah-Adat-Baileo-Nolloth-2-1536x1023.jpg.webp">', isi: "Baileo", detail: " Baileo adalah rumah adat tradisional khas masyarakat Maluku dan Maluku Utara yang berfungsi sebagai balai pertemuan untuk upacara adat, musyawarah, dan menyimpan benda-benda pusaka, bukan sebagai tempat tinggal harian." },
+                    { label: "Tarian tradisional", gambar: '<img src="https://image.idntimes.com/post/20230313/0413232022-shutterstock-1483726541-4ca10d321848f1c96b9086e0d4cbfff3.jpg?tr=w-1200,f-webp,q-75&width=1200&format=webp&quality=75"> ', isi: 'Tari Cakalele', detail: "Cakalele adalah tarian perang tradisional Maluku yang digunakan untuk menyambut tamu ataupun dalam perayaan adat." },
+                    { label: "Alat Musik tradisional", gambar: '<img src="https://cdn.kibrispdr.org/data/253/gambar-alat-musik-dari-maluku-20.jpg">', isi: 'Tifa', detail: "Alat musik ini memiliki bentuk yang menyerupai gendang serta terbuat dari kayu yang di lubangi pada bagian tengahnya. Setelah dilubangi, kemudian ditutupi dengan kulit hewan (biasanya kulit rusa). Dengan begitu, ketika alat musik ini dimainkan dengan cara dipukul bisa menghasilkan suara yang bagus dan indah." },
+                    { label: "Makanan Khas", gambar: '<img src="https://upload.wikimedia.org/wikipedia/commons/0/01/Papeda%2C_Kuah_Kuning%2C_Ikan_Tude_Bakar_2.jpg">', isi: "Papeda", detail: " bubur sagu khas Indonesia Timur, terutama dari Papua dan Maluku, yang terbuat dari tepung sagu yang dicampur air panas hingga mengental dan memiliki tekstur lengket menyerupai lem" }
+                ]
+            },
+
+        };
+
+        function pilihProvinsi(provKey) {
+            if (visitedProv.has(provKey)) {
+                showConfirm("Provinsi ini sudah pernah kamu kunjungi! Apakah ingin membukanya lagi?", (lanjut) => {
+                    if (lanjut) {
+                        showProvinsi(provKey);
+                    }
+                });
+            } else {
+                visitedProv.add(provKey);
+                showProvinsi(provKey);
+            }
+        }
+
+
+
+        function showProvinsi(provKey) {
+            currentProv = provKey;
+
+            document.getElementById('containerAwal').style.display = 'none';
+            document.getElementById('containerUtama').style.display = 'block';
+            triggerAnimation("app");
+
+            const data = Dataprovinsi[provKey];
+            let html = "";
+
+            if (!data) {
+                html = `
+            
+            <div class="animate-ragam">
+                <h3>Bagian Ini Masih Dalam pengerjaan</h3>
+            <button onclick="backToMap()">Kembali Ke <br> Peta Utama </button>
+            </div>`;
+                document.getElementById("app").innerHTML = html;
+                triggerAnimation("app");
+                return;
+            }
+
+            html = `
+        <h2>${data.nama}</h2>
+        <h3>${data.subjudul}</h3>
+        <p>${data.deskripsi}</p>
+        <div class="cards">
+            ${data.konten.map((item, idx) =>
+                `<div class="card-box" onclick="showDetail(${idx})">
+                    <div class="label"><strong>${item.label}</strong></div>
+                    <div class="card">${item.gambar}</div>
+                </div>`
+            ).join("")}
+        </div>`;
+
+            if (visitedCards.size === data.konten.length) {
+                html += `<br><br><button onclick="backToMap()">Kembali ke Peta Utama</button>`;
+            }
+
+            document.getElementById("app").innerHTML = html;
+            triggerAnimation("app", "animate-ragam");
+        }
+
+
+        function showDetail(index) {
+            const data = Dataprovinsi[currentProv];
+            const item = data.konten[index];
+            visitedCards.add(index);
+
+            let html = `
+        <h2>${data.nama}</h2>
+        <h3>${item.label}</h3>
+        <div class="isian">${item.isi}</div>
+        <br>
+        <div class="Informasinya">
+            <div class="card">${item.gambar}</div> 
+            <div class="Detailinfo">${item.detail}</div>
+        </div>
+        <br>
+        <button id="kembali" onclick="showProvinsi('${currentProv}')"> 
+            Lihat Hal Lain Di Daerah <br> <b> ${data.nama} </b>
+        </button>
+    `;
+
+            if (visitedCards.size === data.konten.length) {
+                html += `<br><br><button onclick="backToMap()">Kembali ke Peta Utama</button>`;
+            }
+
+            document.getElementById("app").innerHTML = html;
+            triggerAnimation("app", "animate-detail");
+        }
+
+        function triggerAnimation(id, animationClass) {
+            const el = document.getElementById(id);
+            el.classList.remove("animate-ragam", "animate-detail"); // hapus dulu semua
+            void el.offsetWidth; // reflow
+            el.classList.add(animationClass); // tambahkan yang dipilih
+        }
+
+
+        function showPointModal(message) {
+            const modal = document.getElementById("pointModal");
+            var text = document.getElementById("pointText");
+            const closeBtn = document.getElementById("closePoint");
+            const name = localStorage.getItem("playerName")
+
+            text.innerHTML = message;
+            modal.style.display = "flex";
+
+            closeBtn.onclick = () => {
+                modal.style.display = "none";
+            };
+        }
+
+        function capitalizeName(name) {
+            return name
+                .toLowerCase() // bikin semua huruf kecil dulu
+                .split(" ")    // pisah per kata
+                .map(word => word.charAt(0).toUpperCase() + word.slice(1)) // huruf pertama jadi besar
+                .join(" ");    // gabung lagi
+        }
+
+
+
+
+
+        function backToMap() {
+            const data = Dataprovinsi[currentProv];
+            if (data && visitedCards.size === data.konten.length) {
+                const provIndex = Object.keys(Dataprovinsi).indexOf(currentProv);
+
+                if (!visitedProvinces.has(currentProv) && provIndex >= 0) {
+                    visitedProvinces.add(currentProv);
+
+                    const gainedPoint = getProvincePoint(provIndex);
+                    edupoint += gainedPoint;
+
+                    const levelName = getLevelName(edupoint);
+                    const rawName = localStorage.getItem("playerName") || "Petualang";
+                    const playerName = capitalizeName(rawName);
+
+
+                    updateEdupoint();
+                    showPointModal(`Selamat ${playerName}, kamu dapat <br> +${gainedPoint} poin!<br><br> Kamu Sekarang Memiliki Tingkatan: <br> <b>${levelName}</b>`);
+
+                    const evalBtn = document.getElementById("evalBtn");
+                    if (edupoint >= 3) {   // ganti dari percent >= 100 menjadi poin >= 60
+                        evalBtn.disabled = false;
+                        evalBtn.classList.add("unlocked");
+                        evalBtn.textContent = "✅ Evaluasi";
+                    } else {
+                        evalBtn.disabled = true;
+                        evalBtn.classList.remove("unlocked");
+                        evalBtn.textContent = "🔒 Evaluasi";
+                    }
+
+                }
+            }
+
+            visitedCards.clear();
+            currentProv = null;
+            document.getElementById("containerAwal").style.display = 'block';
+            document.getElementById("containerUtama").style.display = 'none';
+            saveProgress();
+        }
+
+
+    </script>
+
+
+
+
+    <script defer>
+        /*! Image Map Resizer (imageMapResizer.min.js ) - v1.0.10 - 2019-04-10
+        *  Desc: Resize HTML imageMap to scaled image.
+        *  Copyright: (c) 2019 David J. Bradshaw - dave@bradshaw.net
+        *  License: MIT
+        */
+
+        !function () { "use strict"; function r() { function e() { var r = { width: u.width / u.naturalWidth, height: u.height / u.naturalHeight }, a = { width: parseInt(window.getComputedStyle(u, null).getPropertyValue("padding-left"), 10), height: parseInt(window.getComputedStyle(u, null).getPropertyValue("padding-top"), 10) }; i.forEach(function (e, t) { var n = 0; o[t].coords = e.split(",").map(function (e) { var t = 1 == (n = 1 - n) ? "width" : "height"; return a[t] + Math.floor(Number(e) * r[t]) }).join(",") }) } function t(e) { return e.coords.replace(/ *, */g, ",").replace(/ +/g, ",") } function n() { clearTimeout(d), d = setTimeout(e, 250) } function r(e) { return document.querySelector('img[usemap="' + e + '"]') } var a = this, o = null, i = null, u = null, d = null; "function" != typeof a._resize ? (o = a.getElementsByTagName("area"), i = Array.prototype.map.call(o, t), u = r("#" + a.name) || r(a.name), a._resize = e, u.addEventListener("load", e, !1), window.addEventListener("focus", e, !1), window.addEventListener("resize", n, !1), window.addEventListener("readystatechange", e, !1), document.addEventListener("fullscreenchange", e, !1), u.width === u.naturalWidth && u.height === u.naturalHeight || e()) : a._resize() } function e() { function t(e) { e && (!function (e) { if (!e.tagName) throw new TypeError("Object is not a valid DOM element"); if ("MAP" !== e.tagName.toUpperCase()) throw new TypeError("Expected <MAP> tag, found <" + e.tagName + ">.") }(e), r.call(e), n.push(e)) } var n; return function (e) { switch (n = [], typeof e) { case "undefined": case "string": Array.prototype.forEach.call(document.querySelectorAll(e || "map"), t); break; case "object": t(e); break; default: throw new TypeError("Unexpected data type (" + typeof e + ").") }return n } } "function" == typeof define && define.amd ? define([], e) : "object" == typeof module && "object" == typeof module.exports ? module.exports = e() : window.imageMapResize = e(), "jQuery" in window && (window.jQuery.fn.imageMapResize = function () { return this.filter("map").each(r).end() }) }();
+        //# sourceMappingURL=imageMapResizer.map
+    </script>
+
+    <script defer>
+        function myInit() {
+            const img = document.getElementById("image");
+            const canvas = document.getElementById("myCanvas");
+
+            // set ukuran canvas sesuai ukuran gambar saat pertama kali load
+            canvas.width = img.clientWidth;
+            canvas.height = img.clientHeight;
+        }
+
+
+        function saveProgress() {
+            const data = {
+                edupoint,
+                visitedProv: Array.from(visitedProv),
+                visitedProvinces: Array.from(visitedProvinces),
+                totalSeconds
+            };
+            localStorage.setItem("progressGame", JSON.stringify(data));
+        }
+
+        function loadProgress() {
+            const saved = localStorage.getItem("progressGame");
+            if (saved) {
+                const data = JSON.parse(saved);
+                edupoint = data.edupoint || 0;
+                visitedProv = new Set(data.visitedProv || []);
+                visitedProvinces = new Set(data.visitedProvinces || []);
+                totalSeconds = data.totalSeconds || 0;
+
+                updateEdupoint();
+                document.getElementById("timer").textContent =
+                    String(Math.floor(totalSeconds / 60)).padStart(2, '0') + ":" +
+                    String(totalSeconds % 60).padStart(2, '0');
+            }
+        }
+
+        function resetProgress() {
+            localStorage.removeItem("progressGame");
+            edupoint = 0;
+            visitedProv.clear();
+            visitedProvinces.clear();
+            totalSeconds = 0;
+            updateEdupoint();
+            document.getElementById("timer").textContent = "00:00";
+        }
+
+        // gabungkan loadProgress + myInit saat load halaman
+        window.addEventListener("load", () => {
+            loadProgress();
+            myInit();
+            showIntro();
+        });
+        imageMapResize();
+
+    </script>
+
+
+    <script>
+        // scripth Infobox
+        const infoBox = document.getElementById("infoBox");
+        function myHover(area, event) {
+            // isi teks dari atribut alt
+            infoBox.innerHTML = "<center> <b>" + area.alt + "</center> </b>";
+            // posisi mengikuti kursor
+            infoBox.style.left = (event.pageX + 10) + "px";
+            infoBox.style.top = (event.pageY + 10) + "px";
+            infoBox.style.display = "block";
+        }
+
+        function myLeave() {
+            infoBox.style.display = "none";
+        }
+        document.querySelectorAll("area").forEach(a => {
+            a.addEventListener("mousemove", function (event) {
+                if (infoBox.style.display === "block") {
+                    infoBox.style.left = (event.pageX + 15) + "px";
+                    infoBox.style.top = (event.pageY + 15) + "px";
+                }
+            });
+        }); 
+    </script>
+
+    <script defer>
+        //scrip hover area peta
+        const canvas = document.getElementById("myCanvas");
+        const ctx = canvas.getContext("2d");
+        const img = document.getElementById("image");
+
+        function resizeCanvas() {
+            canvas.width = img.width;
+            canvas.height = img.height;
+            canvas.style.left = img.offsetLeft + "px";
+            canvas.style.top = img.offsetTop + "px";
+        }
+        window.addEventListener("resize", resizeCanvas);
+        img.onload = resizeCanvas;
+
+        function drawPolygon(coords, color = "rgba(30,144,255,0.5") {
+            const points = coords.split(",").map(Number);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // bersihkan dulu
+            ctx.fillStyle = color;
+            ctx.beginPath();
+            ctx.moveTo(points[0], points[1]);
+            for (let i = 2; i < points.length; i += 2) {
+                ctx.lineTo(points[i], points[i + 1]);
+            }
+            ctx.closePath();
+            ctx.fill();
+        }
+
+        function clearPolygon() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // hubungkan dengan area <map>
+        document.querySelectorAll("area").forEach(area => {
+            area.addEventListener("mouseover", () => {
+                drawPolygon(area.coords);
+            });
+            area.addEventListener("mouseout", () => {
+                clearPolygon();
+            });
+        });
+    </script>
+
+
+
+
+
+    <script>
+        //scrip perigantan keluar
+        window.addEventListener('beforeunload', function (konfirmasi) {
+            konfirmasi.preventDefault();
+            konfirmasi.returnValue = '';
+        });
+    </script>
+
+
+
+</body>
+
+</html>
