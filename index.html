@@ -1741,7 +1741,7 @@
                     showPointModal(`Selamat ${playerName}, kamu dapat <br> <b>+${gainedPoint} poin!</b> <br><br> Kamu Sekarang Memiliki Tingkatan: <br> <b>${levelName}</b>`);
 
                     const evalBtn = document.getElementById("evalBtn");
-                    if (edupoint >= 60) {   // ganti dari percent >= 100 menjadi poin >= 60
+                    if (edupoint >= 6) {   // ganti dari percent >= 100 menjadi poin >= 60
                         evalBtn.disabled = false;
                         evalBtn.classList.add("unlocked");
                         evalBtn.textContent = " ✍ Evaluasi";
