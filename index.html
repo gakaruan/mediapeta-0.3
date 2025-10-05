@@ -109,6 +109,14 @@
             box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
         }
 
+        h3 {
+            font-size: 18px;
+            font-style: italic;
+            color: #ec7242;
+            margin-top: 5px;
+            margin-bottom: 15px;
+        }
+
         .container {
             max-width: 1050px;
             min-width: 400px;
@@ -695,6 +703,8 @@
             }
         }
 
+
+
         .icon-speaker {
             object-fit: cover;
             width: 100%;
@@ -718,6 +728,10 @@
         .icon-speaker:active {
             transform: scale(0.95);
         }
+
+        #awalan {
+            text-align: justify;
+        }
     </style>
 </head>
 
@@ -736,8 +750,7 @@
         </div>
     </div>
 
-
-    <div class="perkenalan" id="Awalan" style="display:none;"></div>
+    <div class="perkenalan" id="Awalan" style="display:none ;"></div>
 
     <div id="confirmModal" class="modal">
         <div class="modal-content">
@@ -773,11 +786,9 @@
         <div class="stat-card">LEVEL PETUALANG: <br><span id="levelDisplay">Pemula</span></div>
     </div>
 
-
-
     </div>
-
     <div id="containerAwal">
+        <center> <h3> PETA UTAMA</h3> </center>
         <canvas id='myCanvas'></canvas>
         <div id="infoBox"></div>
         <img id="image" img src="./images/PetaProvinsi.png" usemap="#image-map">
@@ -955,12 +966,15 @@
 
     </div>
 
+
+
     <div id="containerUtama" style="display:none;">
         <div id="app"></div>
     </div>
 
+
     <footer id="petunjukFooter">
-        <h3>📌 Petunjuk Penggunaan Peta</h3>
+        <h3>📌 PETUNJUK PENGGUNAAN MEDIA</h3>
         <ul>
             <li>Perhatikan peta utama yang menampilkan seluruh daerah Indonesia Tingkata Provinsi <br><img
                     src="./images/Tutorial/PetaUtama.png" alt=""></li>
@@ -976,7 +990,16 @@
                     src="./images/Tutorial/Tombol_evaluasi_unlocked.png"></li>
 
         </ul>
+        <h3>📌 INFORMASI TAMBAHAN</h3>
+            <li> jangan tekan tombol RESET PROGRESS kecuali kamu memang mau mereset semua skormu <img src="./images/Tutorial/Tombol_Reset.png" alt=""></li>
+            <li> jika merasa ada bug/kesalahan sitem silahkan untuk mereload halaman </li>
+
+
     </footer>
+
+
+
+
 
 
 
@@ -995,8 +1018,9 @@
 
 
         const TOTAL_PROVINCE = 38;
-        const BASE_POINT = Math.floor(100 / TOTAL_PROVINCE);  // 2
-        const EXTRA_POINT_COUNT = 100 % TOTAL_PROVINCE;       // 24
+        const MAX_POINT = 114;  // Total poin maksimal baru: 38 * 3 = 114
+        const BASE_POINT = 3;   // Poin dasar per provinsi sekarang 3
+        const EXTRA_POINT_COUNT = 0;
         const levels = [
             { points: 0, name: " F " },
             { points: 5, name: " E " },
@@ -1065,12 +1089,11 @@
             } else {
                 awalan.innerHTML = `
                 <div class="dialog-box">
-                <div class="dialog-text">
-                Nah Itu Tadi Petunjuk Untuk Menggunakan Media Ini<br> 
-                Kamu Dapat Menekan Tombol Ulangi Jika Masih Kurang Jelas<br>
-                Tapi Jika Kamu Sudah Paham Silahkan Menekan Tombol Mulai.<br><br>
+                <div class="dialog-text" style="text-align: justify;"  >
+                Kalau kamu scroll dan lihat kebawah kami sudah menyiapkan Petunjuk dan Cara Penggunaan Media Peta Ini
+                Tapi kalau Kamu Merasa Sudah Paham Atau Pernah Membacanya Silahkan Untuk Langsung Berpetualnag <br>
+                <br>Untuk memulai petualangan Silahkan Menekan Tombol Dibawah .<br><br>
                 </div>
-                    <button class="dialog-btn" onclick="ulang()">Ulangi</button>
                     <button class="dialog-btn" onclick="closeAwalan()">Mulai</button>
                 </div>`;
             }
@@ -1118,10 +1141,6 @@
                     { text: `<b>${playerName}?</b><br> Kamu Memiliki Nama Yang Bagus Kawan!`, img: "./images/Avatar0.png" },
                     { text: `Kalau Kamu Datang Kesini Pasti Kamu  Ingin Mempelajari Tentang Keberagaman Yang Ada Di Indonesia Kan?.`, img: "./images/Avatar0.png" },
                     { text: `Nah Disini Sudah Ada Peta yang akan memudahkan kamu mempelajari hal tersebut Kawan!`, img: "./images/Avatar0.png" },
-                    { text: `Tapi Sebelum Itu Tentu Kamu Harus Tahu Dulu Cara Menggunakannya kan? Karena itu akan aku jelaskan dulu cara memakainya. `, img: "./images/Avatar0.png" },
-                    { text: `Nah Sekarang Perhatikan gambar dibawah! Ini adalah Peta utama yang menampilkan semua daerah tingkat provinsi.`, img: "" },
-                    { text: ``, img: "" },
-                    { text: ``, img: "" }
                 ];
 
                 dialogIndex = 0;
@@ -1240,12 +1259,13 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Jawa", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Pesa'an dan Kebaya Roncongan", detail: "Baju Pesa'an adalah pakaian adat Madura untuk pria yang terdiri dari baju longgar berwarna cerah, celana longgar, dan ikat kepala (odheng). Sementara itu, Kebaya Rancongan adalah pasangan dari Pesa'an untuk wanita, berupa kebaya pas badan berwarna cerah yang dipadukan dengan sarung batik khas Madura dan berbagai aksesoris seperti kalung dan giwang emas. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Rumoh Joglo", detail: " Rumah adat Jawa yang juga banyak ditemukan di Jawa Timur. Memiliki ciri khas atap berbentuk limas yang ditopang oleh empat tiang utama (soko guru). Terbuat dari kayu jati dan memiliki filosofi ruang yang mendalam, seperti pendopo, pringgitan, dan dalem  " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Reog Ponorogo', detail: " Tarian kolosal dari Ponorogo yang menampilkan topeng singa barong raksasa yang dihiasi bulu merak. Tarian ini menceritakan tentang perjalanan Prabu Kelana Sewandana mencari kekasihnya. Diiringi oleh musik gamelan yang khas dan energik " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Gamelan", detail: " Seperangkat alat musik tradisional yang terdiri dari gong, kenong, bonang, saron, kendang, dan lain-lain. Gamelan Jawa Timur memiliki ciri khas suara yang lebih keras dan tempo yang lebih cepat dibandingkan gamelan Jawa Tengah " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Rawon", detail: " Sup daging berkuah hitam yang khas karena menggunakan bumbu kluwek. Disajikan dengan nasi, tauge, telur asin, dan sambal. Rawon merupakan salah satu ikon kuliner Jawa Timur yang sangat populer " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Jawa Timur/Baju.jpg">', isi: "Pesa'an dan Kebaya Roncongan", detail: "Baju Pesa'an adalah pakaian adat Madura untuk pria yang terdiri dari baju longgar berwarna cerah, celana longgar, dan ikat kepala (odheng). Sementara itu, Kebaya Rancongan adalah pasangan dari Pesa'an untuk wanita, berupa kebaya pas badan berwarna cerah yang dipadukan dengan sarung batik khas Madura dan berbagai aksesoris seperti kalung dan giwang emas. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Jawa Timur/Rumah.jpeg">', isi: "Rumoh Joglo", detail: " Rumah adat Jawa yang juga banyak ditemukan di Jawa Timur. Memiliki ciri khas atap berbentuk limas yang ditopang oleh empat tiang utama (soko guru). Terbuat dari kayu jati dan memiliki filosofi ruang yang mendalam, seperti pendopo, pringgitan, dan dalem  " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Jawa Timur/Tari_Reog.jpeg">', isi: 'Reog Ponorogo', detail: " Tarian kolosal dari Ponorogo yang menampilkan topeng singa barong raksasa yang dihiasi bulu merak. Tarian ini menceritakan tentang perjalanan Prabu Kelana Sewandana mencari kekasihnya. Diiringi oleh musik gamelan yang khas dan energik " },
+                    { label: "Alat Musik tradisional", gambar: ' <img src="./images/Jawa Timur/Gamelan.jpeg">', isi: "Gamelan", detail: " Seperangkat alat musik tradisional yang terdiri dari gong, kenong, bonang, saron, kendang, dan lain-lain. Gamelan Jawa Timur memiliki ciri khas suara yang lebih keras dan tempo yang lebih cepat dibandingkan gamelan Jawa Tengah " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Jawa Timur/Rawon.jpg" >', isi: "Rawon", detail: " Sup daging berkuah hitam yang khas karena menggunakan bumbu kluwek. Disajikan dengan nasi, tauge, telur asin, dan sambal. Rawon merupakan salah satu ikon kuliner Jawa Timur yang sangat populer " }
                 ]
+
             },
             JaTeng: {
                 nama: "PROVINSI JAWA TENGAH",
@@ -1253,12 +1273,14 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Jawa", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Pakaian Menak", detail: "  Busana pengantin sakral yang terinspirasi dari busana para dewa-dewi. Pengantin hanya mengenakan kain dodot yang menutupi bagian bawah tubuh, sementara bagian dada dihiasi dengan lulur kuning dan aksesoris. Riasan di dahi (paes) berwarna hijau melambangkan kesuburan." },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Joglo", detail: "Rumah ini memiliki ciri khas atap berbentuk tajug yang menyerupai gunung. Kerangka atapnya ditopang oleh tiang utama yang disebut soko guru " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Gambyong', detail: " Tarian ini awalnya merupakan tarian untuk menyambut tamu. Gerakannya lemah gemulai dan anggun, menggambarkan kelembutan wanita Jawa. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Gamelan", detail: " Gamelan adalah ansambel musik yang menonjolkan metalofon, gambang, gendang, dan gong. Musiknya memiliki sistem nada pentatonis (slendro dan pelog) " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Gudeg", detail: " Meskipun identik dengan Yogyakarta, gudeg juga merupakan makanan khas Jawa Tengah, terutama Solo. Makanan ini terbuat dari nangka muda yang dimasak dengan santan dalam waktu lama " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Jawa Tengah/Baju Jawa Tengah.png" alt="">', isi: "Pakaian Menak", detail: "  Busana pengantin sakral yang terinspirasi dari busana para dewa-dewi. Pengantin hanya mengenakan kain dodot yang menutupi bagian bawah tubuh, sementara bagian dada dihiasi dengan lulur kuning dan aksesoris. Riasan di dahi (paes) berwarna hijau melambangkan kesuburan." },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Jawa Tengah/Rumah Joglo Jateng.png" alt="">', detail: "Rumah ini memiliki ciri khas atap berbentuk tajug yang menyerupai gunung. Kerangka atapnya ditopang oleh tiang utama yang disebut soko guru " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Jawa Tengah/Gambyong.JPG">', isi: 'Tari Gambyong', detail: " Tarian ini awalnya merupakan tarian untuk menyambut tamu. Gerakannya lemah gemulai dan anggun, menggambarkan kelembutan wanita Jawa. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Jawa Tengah/Gamelan.webp" alt="">', isi: "Gamelan", detail: " Gamelan adalah ansambel musik yang menonjolkan metalofon, gambang, gendang, dan gong. Musiknya memiliki sistem nada pentatonis (slendro dan pelog) " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Jawa Tengah/Gudeg_jateng.jpg" alt="">', isi: "Gudeg", detail: " Meskipun identik dengan Yogyakarta, gudeg juga merupakan makanan khas Jawa Tengah, terutama Solo. Makanan ini terbuat dari nangka muda yang dimasak dengan santan dalam waktu lama " }
                 ]
+
+
             },
             Yogya: {
                 nama: "DAERAH ISTIMEWA YOGYAKARTA",
@@ -1266,38 +1288,44 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Jawa", detail: " Busana pengantin kebesaran Keraton Yogyakarta yang melambangkan bersatunya mempelai dengan Tuhan. Ciri khasnya adalah riasan paes hitam dengan tepian prada emas di dahi, serta mengenakan kain dodot yang megah " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Jawa Paes Ageng", detail: " Busana pengantin kebesaran Keraton Yogyakarta yang melambangkan bersatunya mempelai dengan Tuhan. Ciri khasnya adalah riasan paes hitam dengan tepian prada emas di dahi, serta mengenakan kain dodot yang megah. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Joglo", detail: " Rumah adatnya adalah Joglo. Di dalam Keraton, terdapat Bangsal Kencono (Balairung Emas) yang merupakan pendopo utama dengan arsitektur joglo yang megah.." },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Serimpi', detail: " Tarian sakral keraton yang dibawakan oleh empat penari wanita. Gerakannya sangat lembut dan meditatif, melambangkan empat unsur dunia (api, air, angin, tanah). " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: " Gamelan Ageng ", detail: " Gamelan khas Keraton Yogyakarta yang memiliki karakter suara agung dan tempo yang lebih lambat dibandingkan gamelan gaya Surakarta.. " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Gudeg", detail: " Icon kuliner Yogyakarta. Rasanya cenderung manis dan disajikan dengan krecek (kulit sapi), telur, dan aya. " }
+                    { label: "Pakaian Adat", gambar: ' <img src="./images/DI Yogyakarta/Baju_Yogyakarta.png" alt="">', isi: "Jawa Paes Ageng", detail: " Busana pengantin kebesaran Keraton Yogyakarta yang melambangkan bersatunya mempelai dengan Tuhan. Ciri khasnya adalah riasan paes hitam dengan tepian prada emas di dahi, serta mengenakan kain dodot yang megah. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/DI Yogyakarta/Rumah_yogya.jpg" alt="">', isi: "Joglo", detail: " Rumah adatnya adalah Joglo. Di dalam Keraton, terdapat Bangsal Kencono (Balairung Emas) yang merupakan pendopo utama dengan arsitektur joglo yang megah.." },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/DI Yogyakarta/tari-serimpi.jpg" alt="">', isi: 'Tari Serimpi', detail: " Tarian sakral keraton yang dibawakan oleh empat penari wanita. Gerakannya sangat lembut dan meditatif, melambangkan empat unsur dunia (api, air, angin, tanah). " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/DI Yogyakarta/Gamelan_yogya.jpg" alt="">', isi: " Gamelan Ageng ", detail: " Gamelan khas Keraton Yogyakarta yang memiliki karakter suara agung dan tempo yang lebih lambat dibandingkan gamelan gaya Surakarta.. " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/DI Yogyakarta/Gudeg_DI.jpeg" alt="">', isi: "Gudeg", detail: " Icon kuliner Yogyakarta. Rasanya cenderung manis dan disajikan dengan krecek (kulit sapi), telur, dan aya. " }
                 ]
             },
+
+
             Bali: {
                 nama: "PROVINSI BALI",
                 subjudul: "Keberagaman Budaya",
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Payas Agung", detail: "Busana pengantin termewah di Bali yang membuat mempelai tampil layaknya raja dan ratu. Ciri khasnya adalah mahkota tinggi dan megah berwarna keemasan untuk pria dan wanita, serta kain prada yang mewah dari atas hingga bawah." },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Gapura Candi Bentar", detail: "Arsitektur gerbang masuk ke rumah atau pura Bali yang berbentuk seperti candi terbelah dua. Melambangkan keseimbangan antara kebaikan dan kejahatan." },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Kecak', detail: "Tari Kecak menceritakan Ramayana dengan iringan paduan suara Cak-Cak dari puluhan penari pria." },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Gamelan Bali", detail: "Gamelan Bali memiliki tempo yang lebih cepat dan dinamis dibandingkan Gamelan Jawa. Alat musik khasnya antara lain ceng-ceng (simbal) dan reyong." },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Ayam Betutu", detail: " Ayam atau bebek utuh yang diisi dengan bumbu rempah khas Bali, lalu dipanggang dalam api sekam sehingga bumbunya sangat meresap.." }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Bali/Payas.webp" alt="">', isi: "Payas Agung", detail: "Busana pengantin termewah di Bali yang membuat mempelai tampil layaknya raja dan ratu. Ciri khasnya adalah mahkota tinggi dan megah berwarna keemasan untuk pria dan wanita, serta kain prada yang mewah dari atas hingga bawah." },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Bali/Gapura.jpg" alt="">', isi: "Gapura Candi Bentar", detail: "Arsitektur gerbang masuk ke rumah atau pura Bali yang berbentuk seperti candi terbelah dua. Melambangkan keseimbangan antara kebaikan dan kejahatan." },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Bali/TariKecak.webp"  alt="">', isi: 'Tari Kecak', detail: "Tari Kecak menceritakan Ramayana dengan iringan paduan suara Cak-Cak dari puluhan penari pria." },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Bali/Gamelan_Bali.jpg"  alt="">', isi: "Gamelan Bali", detail: "Gamelan Bali memiliki tempo yang lebih cepat dan dinamis dibandingkan Gamelan Jawa. Alat musik khasnya antara lain ceng-ceng (simbal) dan reyong." },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Bali/Ayam_Betutu.jpg"  alt="">', isi: "Ayam Betutu", detail: " Ayam atau bebek utuh yang diisi dengan bumbu rempah khas Bali, lalu dipanggang dalam api sekam sehingga bumbunya sangat meresap.." }
                 ]
             },
+
+
             Sumsel: {
                 nama: "PROVINSI SULAWESI SELATAN",
                 subjudul: "Keberagaman Budaya",
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Pakaian Menak", detail: " Busana pengantin adat Palembang yang melambangkan keagungan Kerajaan Sriwijaya. Didominasi warna merah dan emas, lengkap dengan mahkota, teratai dada, dan aneka perhiasan yang berat dan mewah. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Rumoh Julang Ngapak", detail: " Rumah panggung dari kayu dengan atap berbentuk limas yang bertingkat-tingkat (disebut kekijing). Setiap tingkat memiliki filosofi dan fungsi yang berbeda " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Angklung', detail: " Tarian penyambutan tamu agung yang ditarikan oleh sekelompok penari wanita. Penari utama membawa tepak sirih untuk dipersembahkan kepada tamu " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "", detail: " Genre musik Melayu dengan iringan gitar tunggal. Liriknya seringkali berupa pantun atau syair yang menceritakan kehidupan sehari-hari " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Batagor", detail: " Makanan dari adonan ikan giling dan tepung sagu. Disajikan dengan kuah cuka yang disebut cuko " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Sulawesi Selatan/Bajuadat.jpg" alt="">', isi: "Aesan Gede", detail: " Busana pengantin adat Palembang yang melambangkan keagungan Kerajaan Sriwijaya. Didominasi warna merah dan emas, lengkap dengan mahkota, teratai dada, dan aneka perhiasan yang berat dan mewah. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Sulawesi Selatan/RumahLimasSumsel.png" alt="">', isi: "Rumah Limas", detail: " Rumah panggung dari kayu dengan atap berbentuk limas yang bertingkat-tingkat (disebut kekijing). Setiap tingkat memiliki filosofi dan fungsi yang berbeda " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Sulawesi Selatan/Tari.jpeg" alt="">', isi: 'Tari Gending Sriwijaya', detail: " Tarian penyambutan tamu agung yang ditarikan oleh sekelompok penari wanita. Penari utama membawa tepak sirih untuk dipersembahkan kepada tamu " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Sulawesi Selatan/musik.png" alt="">', isi: "Batanghari Sembilan", detail: " Genre musik Melayu dengan iringan gitar tunggal. Liriknya seringkali berupa pantun atau syair yang menceritakan kehidupan sehari-hari " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Sulawesi Selatan/Pempek_Kuah_Cuko.jpg" alt="">', isi: "Pempek", detail: " Makanan dari adonan ikan giling dan tepung sagu. Disajikan dengan kuah cuka yang disebut cuko " }
                 ]
+
+
             },
             Sumut: {
                 nama: "PROVINSI SUMATERA UTARA",
@@ -1305,11 +1333,11 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: " Batak Toba ", detail: " Pengantin mengenakan kain Ulos Sadum (wanita) dan Ulos Ragi Hotang (pria). Ciri khasnya adalah hiasan kepala (sortali) yang diikatkan di dahi dan berbagai aksesoris perak atau emas sebagai simbol status dan harapan. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: " Rumah Bolon ", detail: " Rumah adat suku Batak Toba berbentuk panggung dengan atap melengkung runcing di kedua ujungnya. Dindingnya sering dihiasi ukiran cicak (gorga)." },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Tortor', detail: " Tarian yang merupakan bagian penting dalam upacara adat Batak. Gerakannya sederhana dan diiringi oleh musik gondang." },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Gondang Sabangunan", detail: " Ansambel musik Batak Toba yang terdiri dari taganing (gendang), gong, dan sarune (alat tiup). Musik ini mengiringi Tari Tortor dan ritual adat." },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Bika Ambon", detail: " Kue khas Medan berwarna kuning, bertekstur legit dan berongga-rongga seperti sarang semut. " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Kalimantan Utara/BatakToba.webp" alt="">', isi: " Batak Toba ", detail: " Pengantin mengenakan kain Ulos Sadum (wanita) dan Ulos Ragi Hotang (pria). Ciri khasnya adalah hiasan kepala (sortali) yang diikatkan di dahi dan berbagai aksesoris perak atau emas sebagai simbol status dan harapan. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Kalimantan Utara/rumahbatak.jpg" alt="">', isi: " Rumah Bolon ", detail: " Rumah adat suku Batak Toba berbentuk panggung dengan atap melengkung runcing di kedua ujungnya. Dindingnya sering dihiasi ukiran cicak (gorga)." },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Kalimantan Utara/Tari.png" alt="">', isi: 'Tari Tortor', detail: " Tarian yang merupakan bagian penting dalam upacara adat Batak. Gerakannya sederhana dan diiringi oleh musik gondang." },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Kalimantan Utara/musik.png" alt="">', isi: "Gondang Sabangunan", detail: " Ansambel musik Batak Toba yang terdiri dari taganing (gendang), gong, dan sarune (alat tiup). Musik ini mengiringi Tari Tortor dan ritual adat." },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Kalimantan Utara/makanan.jpg" alt="">', isi: "Bika Ambon", detail: " Kue khas Medan berwarna kuning, bertekstur legit dan berongga-rongga seperti sarang semut. " }
                 ]
             },
             Riau: {
@@ -1318,11 +1346,11 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b>Bahasa</b> ', isi: "  ", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: " Baju Cekak Musang & Kebaya Laboh ", detail: " Busana pengantin Melayu yang anggun. Pria mengenakan Baju Kurung Cekak Musang dari kain songket, lengkap dengan tanjak (hiasan kepala). Wanita mengenakan Baju Kebaya Laboh dengan hiasan kepala yang disebut Jura " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: " Rumah Melayu Selaso Jatuh Kembar ", detail: " Rumah panggung dengan ciri khas memiliki selasar (selaso) yang lantainya lebih rendah dari ruang utama. Atapnya berbentuk limas dengan hiasan selembayung " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: ' Tari Zapin ', detail: " Tarian yang mendapat pengaruh budaya Arab dan Persia. Gerakannya fokus pada langkah kaki yang cepat dan ritmis, sering ditarikan secara berpasangan." },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: " Gambus ", detail: " Alat musik petik seperti mandolin yang berasal dari Timur Tengah. Musik Gambus mengiringi Tari Zapin dan nyanyian bernuansa Islami." },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Gulai Ikan Patin", detail: " kan patin yang dimasak dengan kuah santan kuning yang kaya rempah. Ciri khasnya adalah penggunaan tempoyak (durian fermentasi) yang memberikan rasa asam unik." }
+                    { label: "Pakaian Adat", gambar: '<img src="images/Riau/BajuRiau.png" alt="">', isi: " Baju Cekak Musang & Kebaya Laboh ", detail: " Busana pengantin Melayu yang anggun. Pria mengenakan Baju Kurung Cekak Musang dari kain songket, lengkap dengan tanjak (hiasan kepala). Wanita mengenakan Baju Kebaya Laboh dengan hiasan kepala yang disebut Jura " },
+                    { label: "Rumah Adat", gambar: '<img src="images/Riau/Rumah.jpg" alt="">', isi: " Rumah Melayu Selaso Jatuh Kembar ", detail: " Rumah panggung dengan ciri khas memiliki selasar (selaso) yang lantainya lebih rendah dari ruang utama. Atapnya berbentuk limas dengan hiasan selembayung " },
+                    { label: "Tarian tradisional", gambar: '<img src="images/Riau/Tarizapin.jpg" alt=""> ">', isi: ' Tari Zapin ', detail: " Tarian yang mendapat pengaruh budaya Arab dan Persia. Gerakannya fokus pada langkah kaki yang cepat dan ritmis, sering ditarikan secara berpasangan." },
+                    { label: "Alat Musik tradisional", gambar: '<img src="images/Riau/musikGambus.jpg" alt="">', isi: " Gambus ", detail: " Alat musik petik seperti mandolin yang berasal dari Timur Tengah. Musik Gambus mengiringi Tari Zapin dan nyanyian bernuansa Islami." },
+                    { label: "Makanan Khas", gambar: '<img src="images/Riau/gulaiikan.jpeg" alt="">', isi: "Gulai Ikan Patin", detail: " kan patin yang dimasak dengan kuah santan kuning yang kaya rempah. Ciri khasnya adalah penggunaan tempoyak (durian fermentasi) yang memberikan rasa asam unik." }
                 ]
             },
             Bangka: {
@@ -1331,24 +1359,25 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Paksian dan Baju Seting", detail: " Busana pengantin yang unik karena akulturasi budaya. Pengantin wanita mengenakan Pakaian (baju kurung merah dengan mahkota emas pengaruh Tionghoa). Pengantin pria mengenakan Baju Seting (jubah panjang pengaruh Arab). " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: " Rumah Rakit ", detail: " Sebagai daerah kepulauan, terdapat Rumah Rakit yang dibangun di atas air. Di darat, bentuk rumahnya adalah rumah panggung kayu khas Melayu. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'AngkTari Campaklung', detail: " Tarian pergaulan yang ditarikan oleh muda-mudi secara berpasangan. Gerakannya ceria dan mendapat pengaruh dari budaya Eropa (Portugis). " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: " Dambus ", detail: " Alat musik petik mirip gambus dengan kepala berbentuk kepala rusa. Musiknya digunakan untuk mengiringi tarian dan nyanyian Melayu Bangka. " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: " Lempah Kuning ", detail: " Sup ikan dengan kuah kuning asam pedas yang segar. Bumbu utamanya adalah kunyit, cabai, dan nanas yang memberikan rasa khas. " }
+                    { label: "Pakaian Adat", gambar: ' <img src="./images/Kepulauan Bangka Belitung/pakaian-adat-paksian.webp" alt="">', isi: "Paksian dan Baju Seting", detail: " Busana pengantin yang unik karena akulturasi budaya. Pengantin wanita mengenakan Pakaian (baju kurung merah dengan mahkota emas pengaruh Tionghoa). Pengantin pria mengenakan Baju Seting (jubah panjang pengaruh Arab). " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Kepulauan Bangka Belitung/rumah.webp" alt="">', isi: " Rumah Rakit ", detail: " Sebagai daerah kepulauan, terdapat Rumah Rakit yang dibangun di atas air. Di darat, bentuk rumahnya adalah rumah panggung kayu khas Melayu. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Kepulauan Bangka Belitung/Tari_Campakjpg" alt="">', isi: 'AngkTari Campaklung', detail: " Tarian pergaulan yang ditarikan oleh muda-mudi secara berpasangan. Gerakannya ceria dan mendapat pengaruh dari budaya Eropa (Portugis). " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Kepulauan Bangka Belitung/Dambus.jpg" alt="">', isi: " Dambus ", detail: " Alat musik petik mirip gambus dengan kepala berbentuk kepala rusa. Musiknya digunakan untuk mengiringi tarian dan nyanyian Melayu Bangka. " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Kepulauan Bangka Belitung/makanan.jpg" alt="">', isi: " Lempah Kuning ", detail: " Sup ikan dengan kuah kuning asam pedas yang segar. Bumbu utamanya adalah kunyit, cabai, dan nanas yang memberikan rasa khas. " }
                 ]
             },
+
             Banten: {
                 nama: "PROVINSI BANTEN",
                 subjudul: "Keberagaman Budaya",
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Banten Dodotan", detail: " Pakaian pengantin yang sederhana namun sakral. Terdiri dari kain tenun berwarna putih yang melambangkan kesucian. Pengantin pria mengenakan ikat kepala putih, sementara wanita mengenakan kain sebatas dada (kemben) dan bawahan kain tenun.. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Sulah Nyanda", detail: "Rumah panggung suku Baduy yang terbuat dari bambu dan ijuk. Dibuat tanpa paku dan harus mengikuti kontur tanah, sebagai bentuk penghormatan terhadap alam. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Bendrong Lesung', detail: " Tarian yang menggambarkan kegiatan menumbuk padi. Para penari menggunakan alu dan lesung sebagai properti, menciptakan musik ritmis dari benturan keduanya. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Angklung Buhun", detail: " Alat musik angklung khas masyarakat Baduy yang dimainkan saat ritual-ritual adat, terutama yang berkaitan dengan pertanian padi. " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Nasi Rabeg", detail: " Makanan berkuah dengan bahan utama daging atau jeroan kambing. Kuahnya kaya akan rempah seperti jahe, lada, dan pala, memberikan rasa hangat dan pedas. " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Banten/Baju.png" alt="">', isi: "Banten Dodotan", detail: " Pakaian pengantin yang sederhana namun sakral. Terdiri dari kain tenun berwarna putih yang melambangkan kesucian. Pengantin pria mengenakan ikat kepala putih, sementara wanita mengenakan kain sebatas dada (kemben) dan bawahan kain tenun.. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Banten/RumahSulah.png" alt="">', isi: "Sulah Nyanda", detail: "Rumah panggung suku Baduy yang terbuat dari bambu dan ijuk. Dibuat tanpa paku dan harus mengikuti kontur tanah, sebagai bentuk penghormatan terhadap alam. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Banten/tari.jpg" alt="">', isi: 'Tari Bendrong Lesung', detail: " Tarian yang menggambarkan kegiatan menumbuk padi. Para penari menggunakan alu dan lesung sebagai properti, menciptakan musik ritmis dari benturan keduanya. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Banten/alatmusik.jpg" alt="">', isi: "Angklung Buhun", detail: " Alat musik angklung khas masyarakat Baduy yang dimainkan saat ritual-ritual adat, terutama yang berkaitan dengan pertanian padi. " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Banten/makanan.jpg" alt="">', isi: "Nasi Rabeg", detail: " Makanan berkuah dengan bahan utama daging atau jeroan kambing. Kuahnya kaya akan rempah seperti jahe, lada, dan pala, memberikan rasa hangat dan pedas. " }
                 ]
             },
             NTT: {
@@ -1357,12 +1386,18 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Pakaian Amarasi", detail: " Pakaian Adat Amarasi adalah busana tradisional yang dikenakan oleh Suku Dawan yang mendiami wilayah Kabupaten Kupang, Pulau Timor. Pakaian ini sarat akan makna dan menjadi simbol status sosial, keberanian, serta identitas budaya. Terbuat dari kain tenun tangan yang disebut 'Tais', setiap helai dan aksesorisnya memiliki filosofi tersendiri. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Rumah Musalaki", detail: " Rumah adat suku Ende Lio. Atapnya menjulang tinggi dan terbuat dari ilalang, melambangkan hubungan dengan leluhur dan Sang Pencipta. Strukturnya ditopang oleh tiang-tiang kayu besar. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Caci', detail: "  Tarian perang dari Manggarai yang juga merupakan ritual adu ketangkasan. Penari saling serang menggunakan cambuk dan bertahan dengan perisai kulit kerbau. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Sasando", detail: " Alat musik petik dari Pulau Rote yang terbuat dari bambu dengan dawai yang dikelilingi oleh anyaman daun lontar berbentuk kipas sebagai resonator. " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Se'i", detail: " Daging asap, biasanya daging babi atau sapi, yang diiris tipis-tipis. Proses pengasapannya menggunakan kayu kosambi yang memberikan aroma khas. Disajikan dengan sambal lu'at.. " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Nusa Tenggara Timur/bajuadat.png" alt="">', isi: "Pakaian Amarasi", detail: " Pakaian Adat Amarasi adalah busana tradisional yang dikenakan oleh Suku Dawan yang mendiami wilayah Kabupaten Kupang, Pulau Timor. Pakaian ini sarat akan makna dan menjadi simbol status sosial, keberanian, serta identitas budaya. Terbuat dari kain tenun tangan yang disebut 'Tais', setiap helai dan aksesorisnya memiliki filosofi tersendiri. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Nusa Tenggara Timur/Rumahadat.jpg" alt="">', isi: "Rumah Musalaki", detail: " Rumah adat suku Ende Lio. Atapnya menjulang tinggi dan terbuat dari ilalang, melambangkan hubungan dengan leluhur dan Sang Pencipta. Strukturnya ditopang oleh tiang-tiang kayu besar. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Nusa Tenggara Timur/taricaci.jpg" alt="">', isi: 'Tari Caci', detail: "  Tarian perang dari Manggarai yang juga merupakan ritual adu ketangkasan. Penari saling serang menggunakan cambuk dan bertahan dengan perisai kulit kerbau. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Nusa Tenggara Timur/alatmusik.jpg" alt="">', isi: "Sasando", detail: " Alat musik petik dari Pulau Rote yang terbuat dari bambu dengan dawai yang dikelilingi oleh anyaman daun lontar berbentuk kipas sebagai resonator. " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Nusa Tenggara Timur/Sei_Babi.JPG" alt="">', isi: "Se'i", detail: " Daging asap, biasanya daging babi atau sapi, yang diiris tipis-tipis. Proses pengasapannya menggunakan kayu kosambi yang memberikan aroma khas. Disajikan dengan sambal lu'at.. " }
                 ]
+
+
+
+
+
+
             },
             KalBar: {
                 nama: "PROVINSI KALIMANTAN BARAT",
@@ -1370,11 +1405,11 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: "  " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "King Bibinge & King Baba", detail: " Pakaian pengantin suku Dayak. Terbuat dari kulit kayu kapuo atau ampuro. King Bibinge (wanita) berupa kemben dan rok, sedangkan King Baba (pria) berupa rompi dan cawat. Dilengkapi hiasan kepala dari bulu burung enggang. " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Rumah Panjang", detail: " Rumah panggung yang sangat panjang, bisa mencapai ratusan meter, dihuni oleh puluhan keluarga. Menjadi pusat kehidupan komunal suku Dayak. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Monong', detail: " Tarian ritual penyembuhan suku Dayak. Penari (dukun) menari sambil membacakan mantra untuk mengusir roh jahat penyebab penyakit. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Sape", detail: " Alat musik petik mirip gitar dari kayu yang diukir indah. Menghasilkan alunan musik yang meditatif dan sering dimainkan dalam upacara adat Dayak. " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Bubur Pedas", detail: " Makanan khas Melayu Sambas. Disebut 'PEDAS' bukan karena rasanya, melainkan karena kaya akan bumbu rempah dan sayuran. Disajikan dengan taburan kacang tanah dan ikan teri goreng. " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Kalimantan Barat/Baju.jpeg" alt="">', isi: "King Bibinge & King Baba", detail: " Pakaian pengantin suku Dayak. Terbuat dari kulit kayu kapuo atau ampuro. King Bibinge (wanita) berupa kemben dan rok, sedangkan King Baba (pria) berupa rompi dan cawat. Dilengkapi hiasan kepala dari bulu burung enggang. " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Kalimantan Barat/RumahPanjang.png" alt="">', isi: "Rumah Panjang", detail: " Rumah panggung yang sangat panjang, bisa mencapai ratusan meter, dihuni oleh puluhan keluarga. Menjadi pusat kehidupan komunal suku Dayak. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Kalimantan Barat/Tari.jpg" alt="">', isi: 'Tari Monong', detail: " Tarian ritual penyembuhan suku Dayak. Penari (dukun) menari sambil membacakan mantra untuk mengusir roh jahat penyebab penyakit. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Kalimantan Barat/alatsape.webp" alt="">', isi: "Sape", detail: " Alat musik petik mirip gitar dari kayu yang diukir indah. Menghasilkan alunan musik yang meditatif dan sering dimainkan dalam upacara adat Dayak. " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Kalimantan Barat/makananbuburpedas.jpg" alt="">', isi: "Bubur Pedas", detail: " Makanan khas Melayu Sambas. Disebut 'PEDAS' bukan karena rasanya, melainkan karena kaya akan bumbu rempah dan sayuran. Disajikan dengan taburan kacang tanah dan ikan teri goreng. " }
                 ]
             },
             KalTeng: {
@@ -1383,11 +1418,11 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src="Sangkarut ">', isi: "Sangkarut", detail: "Pakaian pengantin suku Dayak Ngaju yang dulunya merupakan baju perang. Terbuat dari serat kulit kayu dan dihiasi dengan kancing, manik-manik, serta tempelan kulit trenggiling agar tahan senjata" },
-                    { label: "Rumah Adat", gambar: '<img src="Rumah Betang">', isi: "Rumah Betang", detail: " Sama seperti di Kalimantan Barat, rumah adatnya adalah rumah panjang (Betang) yang menjadi pusat kehidupan komunal masyarakat Dayak. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tarian Balean Dadas', detail: " Tarian ritual penyembuhan suku Dayak. Penari wanita menari dengan alunan musik magis untuk meminta kesembuhan dari roh-roh leluhur. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Japen", detail: " Alat musik petik mirip Sape' atau kecapi yang sering dimainkan sebagai pengiring tarian atau hiburan " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Juhu Singkah", detail: " Makanan khas Dayak yang terbuat dari umbut rotan. Dimasak dengan santan dan ikan, menghasilkan rasa yang gurih dengan sedikit sentuhan pahit yang khas dari rotan muda " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Kalimantan Tengah/bajusang.jpg" alt="">', isi: "Sangkarut", detail: "Pakaian pengantin suku Dayak Ngaju yang dulunya merupakan baju perang. Terbuat dari serat kulit kayu dan dihiasi dengan kancing, manik-manik, serta tempelan kulit trenggiling agar tahan senjata" },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Kalimantan Tengah/RumahBen.png" alt="">', detail: " Sama seperti di Kalimantan Barat, rumah adatnya adalah rumah panjang (Betang) yang menjadi pusat kehidupan komunal masyarakat Dayak. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Kalimantan Tengah/tari.jpeg" alt="">', isi: 'Tarian Balean Dadas', detail: " Tarian ritual penyembuhan suku Dayak. Penari wanita menari dengan alunan musik magis untuk meminta kesembuhan dari roh-roh leluhur. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Kalimantan Tengah/musikjanpen.jpg" alt="">', isi: "Japen", detail: " Alat musik petik mirip Sape' atau kecapi yang sering dimainkan sebagai pengiring tarian atau hiburan " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Kalimantan Tengah/makanan juhu.jpg" alt="">', isi: "Juhu Singkah", detail: " Makanan khas Dayak yang terbuat dari umbut rotan. Dimasak dengan santan dan ikan, menghasilkan rasa yang gurih dengan sedikit sentuhan pahit yang khas dari rotan muda " }
                 ]
             },
             Bengkulu: {
@@ -1396,11 +1431,11 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa </b> ', isi: "Bahasa Sunda", detail: " " },
-                    { label: "Pakaian Adat", gambar: '<img src=" ">', isi: "Melayu Bengkulu", detail: " Busana pengantin yang mewah dengan pengaruh Melayu dan Tionghoa. Didominasi warna merah dengan benang emas. Pengantin wanita mengenakan mahkota berbentuk teratai, sementara pria mengenakan topi runcing (singal). " },
-                    { label: "Rumah Adat", gambar: '<img src=" ">', isi: "Bubungan Lima", detail: " Rumah panggung kayu dengan atap berbentuk limas. Konstruksinya tahan gempa dan bagian bawah rumah (kolong) digunakan untuk menyimpan hasil panen atau ternak. " },
-                    { label: "Tarian tradisional", gambar: '<img src=" ">', isi: 'Tari Andun', detail: " Rumah panggung kayu dengan atap berbentuk limas. Konstruksinya tahan gempa dan bagian bawah rumah (kolong) digunakan untuk menyimpan hasil panen atau ternak. " },
-                    { label: "Alat Musik tradisional", gambar: '<img src=" ">', isi: "Dol", detail: " Alat musik perkusi mirip bedug yang terbuat dari kayu dan kulit sapi. Dimainkan secara berkelompok dalam festival Tabot untuk memperingati wafatnya cucu Nabi Muhammad " },
-                    { label: "Makanan Khas", gambar: '<img src=" ">', isi: "Pendap", detail: " Makanan yang terbuat dari ikan yang dibumbui dengan kelapa parut dan rempah-rempah, lalu dibungkus dengan daun talas dan direbus dalam waktu lama hingga bumbunya meresap " }
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Bengkulu/Pakaian_Melayu_Bengkulu.jpg" alt="">', isi: "Melayu Bengkulu", detail: " Busana pengantin yang mewah dengan pengaruh Melayu dan Tionghoa. Didominasi warna merah dengan benang emas. Pengantin wanita mengenakan mahkota berbentuk teratai, sementara pria mengenakan topi runcing (singal). " },
+                    { label: "Rumah Adat", gambar: '<img src="./images/Bengkulu/rumahbengkulu.webp" alt="">', isi: "Bubungan Lima", detail: " Rumah panggung kayu dengan atap berbentuk limas. Konstruksinya tahan gempa dan bagian bawah rumah (kolong) digunakan untuk menyimpan hasil panen atau ternak. " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Bengkulu/tariandun.jpg" alt="">', isi: 'Tari Andun', detail: " Rumah panggung kayu dengan atap berbentuk limas. Konstruksinya tahan gempa dan bagian bawah rumah (kolong) digunakan untuk menyimpan hasil panen atau ternak. " },
+                    { label: "Alat Musik tradisional", gambar: '<img src="./images/Bengkulu/alatTokok_Dol.jpg" alt="">', isi: "Dol", detail: " Alat musik perkusi mirip bedug yang terbuat dari kayu dan kulit sapi. Dimainkan secara berkelompok dalam festival Tabot untuk memperingati wafatnya cucu Nabi Muhammad " },
+                    { label: "Makanan Khas", gambar: '<img src="./images/Bengkulu/makananpendap.jpg" alt="">', isi: "Pendap", detail: " Makanan yang terbuat dari ikan yang dibumbui dengan kelapa parut dan rempah-rempah, lalu dibungkus dengan daun talas dan direbus dalam waktu lama hingga bumbunya meresap " }
                 ]
             },
             Papua: {
@@ -1416,11 +1451,6 @@
                     { label: "Makanan Khas", gambar: '<img src="./images/Papua/Sate-Ulat-Sagu-Khas-Papua.jpg" >', isi: "Sate Ulat Sagu", detail: "Sate ulat sagu adalah makanan khas dan kuliner ekstrem dari Papua yang diolah dari ulat sagu, larva dari kumbang sagu yang hidup di dalam batang pohon sagu yang membusuk. Makanan ini memiliki kandungan protein tinggi, rasa gurih manis, dan tekstur kenyal dengan bagian luar yang sedikit keras." }
                 ]
             },
-
-
-
-
-
             Sumbar: {
                 nama: "PROVINSI SUMATERA BARAT",
                 subjudul: "Keberagaman Budaya",
@@ -1433,6 +1463,8 @@
                     { label: "Alat Musik tradisional", gambar: '<img src="https://ik.imagekit.io/tvlk/blog/2024/03/image-2-499x1024.png?tr=q-70,c-at_max,w-500,h-300,dpr-2">', isi: "", detail: "Masyarakat Sumatera Barat memiliki alat musik tradisional yang memiliki kemiripan fungsi dengan klarinet bernama Serunai. Instrumen ini umumnya digunakan dalam berbagai acara adat di Sumatera Barat, menjadi bagian penting dalam ritual batagak panghulu yakni suatu acara adat yang melibatkan pengangkatan atau pelantikan seorang pemimpin adat atau kepala suku." },
                     { label: "Makanan Khas", gambar: '<img src="https://images.tokopedia.net/img/KRMmCm/2022/8/9/51584c5e-2713-4895-88d5-30b677255ffd.jpg">', isi: "Rendang", detail: "Asal-usul rendang ditelusuri berasal dari tanah Minangkabau, Sumatera Barat. Bagi masyarakat Minang, rendang sudah ada sejak dahulu dan telah menjadi masakan tradisi yang dihidangkan dalam berbagai acara adat dan hidangan keseharian." }
                 ]
+
+
             },
             Aceh: {
                 nama: "PROVINSI ACEH",
@@ -1440,13 +1472,14 @@
                 deskripsi: "Klik salah satu box di bawah ini untuk mengetahui detail informasinya.",
                 konten: [
                     { label: "Bahasa Daerah", gambar: ' <b> Bahasa Aceh </b> ', isi: "Bahasa Aceh", detail: "Lon :   Saya <br> Kah :   Kamu<br> Kamoe : Kami<br> Aduen  :   Abang<br> Kee :   Aku" },
-                    { label: "Pakaian Adat", gambar: '<img src="https://cdn1-production-images-kly.akamaized.net/1s6ZPDAwaKC8_YgQZi9VIwjrMUQ=/1280x1706/smart/filters:quality(75):strip_icc():format(webp)/kly-media-production/medias/4872614/original/085979300_1719194866-Snapinsta.app_448956385_18443287396044927_6944848405886561389_n_1024.jpg">', isi: "Linto Baro (pria), Daro Baro (wanita)", detail: "Linto Baro adalah salah satu pakaian tradisional Orang Aceh yang dikenakan oleh pria dewasa. Pakaian ini biasanya digunakan dalam beberapa upacara adat Aceh. Dalam pernikahan Adat Aceh, Linto Baru dikenakan oleh pengantin pria. Sedangkan pada pengantin wanita, memakai Dara Baro. " },
+                    { label: "Pakaian Adat", gambar: '<img src="./images/Aceh/PakaianAdat_Aceh.webp" alt="">', isi: "Linto Baro (pria), Daro Baro (wanita)", detail: "Linto Baro adalah salah satu pakaian tradisional Orang Aceh yang dikenakan oleh pria dewasa. Pakaian ini biasanya digunakan dalam beberapa upacara adat Aceh. Dalam pernikahan Adat Aceh, Linto Baru dikenakan oleh pengantin pria. Sedangkan pada pengantin wanita, memakai Dara Baro. " },
                     { label: "Rumah Adat", gambar: '<img src="https://www.dailysports.id/upload/large/f1ad28bce852df409af40feccfda99cf.jpg">', isi: "Rumoh Aceh", detail: "Pada umumnya Rumoh Aceh merupakan rumah panggung dengan tinggi tiang antara 2,50 – 3 meter, terdiri dari tiga atau lima ruang, dengan satu ruang utama yang dinamakan rambat. Rumoh dengan tiga ruang memiliki 16 tiang, sedangkan Rumoh dengan lima ruang memiliki 24 tiang." },
-                    { label: "Tarian tradisional", gambar: '<img src="images/tari saman.jpg">', isi: 'Tari Saman', detail: "tarian tradisional suku Gayo dari Aceh yang memadukan gerakan dinamis, syair, dan nyanyian tanpa alat musik, serta berfokus pada kekompakan dan kebersamaan para penari " },
+                    { label: "Tarian tradisional", gambar: '<img src="./images/Aceh/Tari_saman.jpg" alt="">', isi: 'Tari Saman', detail: "tarian tradisional suku Gayo dari Aceh yang memadukan gerakan dinamis, syair, dan nyanyian tanpa alat musik, serta berfokus pada kekompakan dan kebersamaan para penari " },
                     { label: "Alat Musik tradisional", gambar: '<img src="https://upload.wikimedia.org/wikipedia/commons/8/88/COLLECTIE_TROPENMUSEUM_Tamboerijn_TMnr_674-744.jpg">', isi: 'Rapai', detail: "Rapai merupakan alat musik tradisional Aceh yang ditabuh menggunakan tangan kosong, tidak menggunakan stik." },
                     { label: "Makanan Khas", gambar: '<img src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Mie_Aceh_with_beef.jpg">', isi: "Mie Aceh", detail: " Keunikan cita rasa mie Aceh terletak pada racikan bumbu yang kaya akan rempah-rempah, sehingga menghasilkan rasa yang kuat di lidah." }
                 ]
             },
+
             JaBar: {
                 nama: "PROVINSI JAWA BARAT",
                 subjudul: "Keberagaman Budaya",
@@ -1525,7 +1558,6 @@
                 triggerAnimation("app");
                 return;
             }
-
             html = `
         <h2>${data.nama}</h2>
         <h3>${data.subjudul}</h3>
@@ -1702,7 +1734,7 @@
                     showPointModal(`Selamat ${playerName}, kamu dapat <br> <b>+${gainedPoint} poin!</b> <br><br> Kamu Sekarang Memiliki Tingkatan: <br> <b>${levelName}</b>`);
 
                     const evalBtn = document.getElementById("evalBtn");
-                    if (edupoint >= 30) {   // ganti dari percent >= 100 menjadi poin >= 60
+                    if (edupoint >= 60) {   // ganti dari percent >= 100 menjadi poin >= 60
                         evalBtn.disabled = false;
                         evalBtn.classList.add("unlocked");
                         evalBtn.textContent = " ✍ Evaluasi";
